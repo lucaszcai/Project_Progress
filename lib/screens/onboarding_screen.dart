@@ -3,7 +3,6 @@ import 'package:liquid_swipe/Constants/Helpers.dart';
 import 'package:liquid_swipe/liquid_swipe.dart';
 import 'package:project_progress/screens/login_screen.dart';
 import 'package:project_progress/utils/constants.dart';
-import 'package:project_progress/widgets/finalscreen.dart';
 
 import 'home.dart';
 
@@ -19,19 +18,137 @@ class OnboardingScreen extends StatelessWidget {
     ),
     Container(
       color: Colors.deepPurpleAccent,
-      child: Center(
-        child: Text(
-            'Track your mood and see changes over time', style: onboardingText
-        ),
+      child: Padding(
+        padding: EdgeInsets.symmetric(vertical: 20.0),
+        child: Container(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+              Container(
+              alignment: Alignment.centerRight,
+                child: FlatButton(
+                  onPressed: () => print('Skip'),
+                  child: Text(
+                  'Skip',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 20.0,
+                  ),
+                ),
+              ),
+            ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Image(image: AssetImage('assets/onboarding/onboarding0.png'),),
+                ),
+                SizedBox(height: 50,),
+                Center(
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      children: <Widget>[
+                        Text('Track your mood and', style: onboardingText),
+                        Text('see changes over time', style: onboardingText),
+                      ] ,
+                    )
+                  ),
+                ),
+          ]
+            )
+      )
       ),
     ),
+    Container(
+      color: Colors.greenAccent,
+      child: Padding(
+          padding: EdgeInsets.symmetric(vertical: 20.0),
+          child: Container(
+              child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: <Widget>[
+                    Container(
+                      alignment: Alignment.centerRight,
+                      child: FlatButton(
+                        onPressed: () => print('Skip'),
+                        child: Text(
+                          'Skip',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 20.0,
+                          ),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Image(image: AssetImage('assets/onboarding/onboarding1.png'),),
+                    ),
+                    SizedBox(height: 50,),
+                    Center(
+                      child: Center(
+                        child: Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Text('Write notes for your future self', style: onboardingText),
+                        ),
+                      ),
+                    ),
+                  ]
+              )
+          )
+      ),
+    ),
+    /*
     Container(
       color: Colors.greenAccent,
       child: Center(
         child: Text('Write notes for your future self', style: onboardingText
         ),
       ),
+    ),*/
+    Container(
+      color: Colors.blueAccent,
+      child: Padding(
+          padding: EdgeInsets.symmetric(vertical: 20.0),
+          child: Container(
+              child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: <Widget>[
+                    Container(
+                      alignment: Alignment.centerRight,
+                      child: FlatButton(
+                        onPressed: () => print('Skip'),
+                        child: Text(
+                          'Skip',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 20.0,
+                          ),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Image(image: AssetImage('assets/onboarding/onboarding2.png'),),
+                    ),
+                    SizedBox(height: 50,),
+                    Center(
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Column(
+                          children: <Widget>[
+                            Text('Connect with a community of', style: onboardingText),
+                            Text('diverse individuals', style: onboardingText),
+                          ]
+                        ),
+                      ),
+                    ),
+                  ]
+              )
+          )
+      ),
     ),
+    /*
+
     Container(
       color: Colors.blueAccent,
       child: Center(
@@ -39,7 +156,7 @@ class OnboardingScreen extends StatelessWidget {
             style: onboardingText
         ),
       ),
-    ),
+    ),*/
     Container(
           child: FinalScreen(),
         )
@@ -63,37 +180,41 @@ class OnboardingScreen extends StatelessWidget {
 
 }
 
+
 class FinalScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
     return Container(
         color: Colors.orangeAccent,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            SizedBox(height: 500,),
-            Center(
-              child: Text(
-                'Begin your journey today',
-                style: onboardingText,
-              ),
-            ),
-            SizedBox(height: 30,
-            ),
-            IconButton(
-                color: Colors.white,
-                icon: Icon(Icons.arrow_forward_ios
+        child: Padding(
+          padding: const EdgeInsets.all(40.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
+              SizedBox(height: 500,),
+              Center(
+                child: Text(
+                  'Begin your journey today',
+                  style: onboardingText,
                 ),
-                iconSize: 40,
-                onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (_) => LoginScreen()
-                  )
-                  );
-                }
-            )
-          ],
+              ),
+              SizedBox(height: 30,
+              ),
+              IconButton(
+                  color: Colors.white,
+                  icon: Icon(Icons.arrow_forward_ios
+                  ),
+                  iconSize: 40,
+                  onPressed: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (_) => LoginScreen()
+                    )
+                    );
+                  }
+              )
+            ],
+          ),
         ),
     );
 
