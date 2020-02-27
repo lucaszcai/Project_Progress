@@ -1,20 +1,23 @@
+import 'package:avatar_glow/avatar_glow.dart';
 import 'package:flutter/material.dart';
 import 'package:liquid_swipe/Constants/Helpers.dart';
 import 'package:liquid_swipe/liquid_swipe.dart';
 import 'package:project_progress/screens/login_screen.dart';
 import 'package:project_progress/utils/constants.dart';
 
-import 'home.dart';
+import 'home_screen.dart';
 
 class OnboardingScreen extends StatelessWidget {
 
   final onboardPages = [
     Container(
       color: Colors.pinkAccent,
+      child: FirstScreen(),
+      /*
       child: Center(
         child: Text('Welcome to Project Progress', style: onboardingText
         ),
-      ),
+      ),*/
     ),
     Container(
       color: Colors.deepPurpleAccent,
@@ -97,16 +100,8 @@ class OnboardingScreen extends StatelessWidget {
           )
       ),
     ),
-    /*
     Container(
-      color: Colors.greenAccent,
-      child: Center(
-        child: Text('Write notes for your future self', style: onboardingText
-        ),
-      ),
-    ),*/
-    Container(
-      color: Colors.blueAccent,
+      color: Colors.pinkAccent,
       child: Padding(
           padding: EdgeInsets.symmetric(vertical: 20.0),
           child: Container(
@@ -147,16 +142,6 @@ class OnboardingScreen extends StatelessWidget {
           )
       ),
     ),
-    /*
-
-    Container(
-      color: Colors.blueAccent,
-      child: Center(
-        child: Text('Connect with a community of \ndiverse individuals',
-            style: onboardingText
-        ),
-      ),
-    ),*/
     Container(
           child: FinalScreen(),
         )
@@ -180,7 +165,6 @@ class OnboardingScreen extends StatelessWidget {
 
 }
 
-
 class FinalScreen extends StatelessWidget {
 
   @override
@@ -193,7 +177,26 @@ class FinalScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
-              SizedBox(height: 500,),
+              AvatarGlow(
+                endRadius: 150,
+                duration: Duration(seconds: 2),
+                glowColor: Colors.white24,
+                repeat: true,
+                repeatPauseDuration: Duration(seconds: 1),
+                startDelay: Duration(seconds: 1),
+                child: Material(
+                    elevation: 25.0,
+                    shape: CircleBorder(),
+                    child: CircleAvatar(
+                      backgroundColor: Colors.grey[100],
+                      child: FlutterLogo(
+                        size: 100.0,
+                      ),
+                      radius: 100.0,
+                    )
+                ),
+              ),
+              //SizedBox(height: 100,),
               Center(
                 child: Text(
                   'Begin your journey today',
@@ -217,6 +220,95 @@ class FinalScreen extends StatelessWidget {
           ),
         ),
     );
-
   }
 }
+
+
+class FirstScreen extends StatefulWidget {
+  final String title;
+
+  FirstScreen({Key key, this.title}) : super(key: key);
+
+  @override
+  _FirstScreen createState() => _FirstScreen();
+}
+
+
+class _FirstScreen extends State<FirstScreen> {
+  // Whether the green box should be visible
+  bool _buttonVisible = true;
+  bool _textVisible = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Container(
+        color: Colors.blueAccent,
+        child: Center(
+          child: Stack(
+            children: <Widget>[
+              Center(
+                child: AnimatedOpacity(
+                  // If the widget is visible, animate to 0.0 (invisible).
+                  // If the widget is hidden, animate to 1.0 (fully visible).
+                  opacity: _buttonVisible ? 1.0 : 0.0,
+                  duration: Duration(milliseconds: 500),
+                  // The green box must be a child of the AnimatedOpacity widget.
+                  child: Container(
+                    child: GestureDetector(
+                      onTap: (){
+                        setState(() {
+                          _buttonVisible = !_buttonVisible;
+                          _textVisible = !_textVisible;
+                        });
+                      },
+                      child: AvatarGlow(
+                        endRadius: 150,
+                        duration: Duration(seconds: 2),
+                        glowColor: Colors.white24,
+                        repeat: true,
+                        repeatPauseDuration: Duration(seconds: 1),
+                        startDelay: Duration(seconds: 1),
+                        child: Material(
+                            elevation: 25.0,
+                            shape: CircleBorder(),
+                            child: CircleAvatar(
+                              backgroundColor: Colors.grey[100],
+                              child: FlutterLogo(
+                                size: 100.0,
+                              ),
+                              radius: 100.0,
+                            )
+                        ),
+                      ),
+                    ),
+                    //color: Colors.green,
+                  ),
+                ),
+              ),
+
+              Center(
+                child: AnimatedOpacity(
+                  // If the widget is visible, animate to 0.0 (invisible).
+                  // If the widget is hidden, animate to 1.0 (fully visible).
+                  opacity: _textVisible ? 1.0 : 0.0,
+                  duration: Duration(milliseconds: 1000),
+                  // The green box must be a child of the AnimatedOpacity widget.
+                  child: Container(
+                    child: Text(
+                        'Welcome to Project Progress',
+                    style: onboardingText,),
+                  ),
+                ),
+              ),
+
+            ],
+          ),
+        ),
+      ),
+
+    );
+  }
+}
+
+

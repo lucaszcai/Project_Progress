@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:project_progress/screens/home.dart';
+import 'package:project_progress/screens/home_screen.dart';
 import 'package:project_progress/utils/constants.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -257,7 +257,6 @@ class _LoginScreenState extends State<LoginScreen> {
                 height: double.infinity,
                 width: double.infinity,
                 decoration: BoxDecoration(
-
                   gradient: LinearGradient(
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
@@ -278,7 +277,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   physics: AlwaysScrollableScrollPhysics(),
                   padding: EdgeInsets.symmetric(
                     horizontal: 40.0,
-                    vertical: 120.0,
+                    vertical: 60.0,
                   ),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
