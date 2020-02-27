@@ -15,46 +15,50 @@ class OnboardingScreen extends StatefulWidget {
 class _OnboardingScreen extends State<OnboardingScreen> {
 
 
-
-  _goToLogin(BuildContext context){
-    Navigator.push(context, MaterialPageRoute(builder: (_) => LoginScreen()));
-  }
-
   @override
   Widget build(BuildContext context) {
     final onboardPages = [
       Container(
         color: Colors.pinkAccent,
-        child: Center(
-          child: Text('Welcome to Project Progress', style: onboardingText
-          ),
-        ),
+        child: FirstScreen()
       ),
       Container(
         color: Colors.deepPurpleAccent,
         child: Padding(
-            padding: EdgeInsets.symmetric(vertical: 20.0),
+            padding: EdgeInsets.symmetric(vertical: 20.0
+            ),
             child: Container(
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: <Widget>[
                       Container(
                         alignment: Alignment.centerRight,
-                        child: skipButton(context),
+                        child: skipButton(context
+                        ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Image(image: AssetImage('assets/onboarding/onboarding0.png'),),
+                        padding: const EdgeInsets.all(8.0
+                        ),
+                        child: Image(
+                          image: AssetImage('assets/onboarding/onboarding0.png'
+                          ),
+                        ),
                       ),
-                      SizedBox(height: 50,),
+                      SizedBox(height: 50,
+                      ),
                       Center(
                         child: Padding(
-                            padding: const EdgeInsets.all(16.0),
+                            padding: const EdgeInsets.all(16.0
+                            ),
                             child: Column(
                               children: <Widget>[
-                                Text('Track your mood and', style: onboardingText),
-                                Text('see changes over time', style: onboardingText),
-                              ] ,
+                                Text(
+                                    'Track your mood and', style: onboardingText
+                                ),
+                                Text('see changes over time',
+                                    style: onboardingText
+                                ),
+                              ],
                             )
                         ),
                       ),
@@ -66,25 +70,35 @@ class _OnboardingScreen extends State<OnboardingScreen> {
       Container(
         color: Colors.greenAccent,
         child: Padding(
-            padding: EdgeInsets.symmetric(vertical: 20.0),
+            padding: EdgeInsets.symmetric(vertical: 20.0
+            ),
             child: Container(
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: <Widget>[
                       Container(
                         alignment: Alignment.centerRight,
-                        child: skipButton(context),
+                        child: skipButton(context
+                        ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Image(image: AssetImage('assets/onboarding/onboarding1.png'),),
+                        padding: const EdgeInsets.all(8.0
+                        ),
+                        child: Image(
+                          image: AssetImage('assets/onboarding/onboarding1.png'
+                          ),
+                        ),
                       ),
-                      SizedBox(height: 50,),
+                      SizedBox(height: 50,
+                      ),
                       Center(
                         child: Center(
                           child: Padding(
-                            padding: const EdgeInsets.all(16.0),
-                            child: Text('Write notes for your future self', style: onboardingText),
+                            padding: const EdgeInsets.all(16.0
+                            ),
+                            child: Text('Write notes for your future self',
+                                style: onboardingText
+                            ),
                           ),
                         ),
                       ),
@@ -96,27 +110,39 @@ class _OnboardingScreen extends State<OnboardingScreen> {
       Container(
         color: Colors.blueAccent,
         child: Padding(
-            padding: EdgeInsets.symmetric(vertical: 20.0),
+            padding: EdgeInsets.symmetric(vertical: 20.0
+            ),
             child: Container(
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: <Widget>[
                       Container(
-                          alignment: Alignment.centerRight,
-                          child: skipButton(context),
+                        alignment: Alignment.centerRight,
+                        child: skipButton(context
+                        ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Image(image: AssetImage('assets/onboarding/onboarding2.png'),),
+                        padding: const EdgeInsets.all(8.0
+                        ),
+                        child: Image(
+                          image: AssetImage('assets/onboarding/onboarding2.png'
+                          ),
+                        ),
                       ),
-                      SizedBox(height: 50,),
+                      SizedBox(height: 50,
+                      ),
                       Center(
                         child: Padding(
-                          padding: const EdgeInsets.all(16.0),
+                          padding: const EdgeInsets.all(16.0
+                          ),
                           child: Column(
                               children: <Widget>[
-                                Text('Connect with a community of', style: onboardingText),
-                                Text('diverse individuals', style: onboardingText),
+                                Text('Connect with a community of',
+                                    style: onboardingText
+                                ),
+                                Text(
+                                    'diverse individuals', style: onboardingText
+                                ),
                               ]
                           ),
                         ),
@@ -130,9 +156,6 @@ class _OnboardingScreen extends State<OnboardingScreen> {
         child: FinalScreen(),
       )
     ];
-
-  @override
-  Widget build(BuildContext context) {
     return Scaffold(
         body: LiquidSwipe(
           pages: onboardPages,
@@ -158,7 +181,6 @@ class _OnboardingScreen extends State<OnboardingScreen> {
       ),
     );
   }
-
 
 }
 
