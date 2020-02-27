@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:project_progress/widgets/calendar_widget.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class Calendar extends StatefulWidget{
@@ -25,10 +26,12 @@ class _Calendar extends State<Calendar>{
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Column(
+    return Scaffold(
+      body: Column(
         children: <Widget>[
           SizedBox(height: MediaQuery.of(context).size.height * 0.05,),
+          //CalendarWidget(calendarController: _calendarController),
+
           TableCalendar(
             calendarController: _calendarController,
           ),
