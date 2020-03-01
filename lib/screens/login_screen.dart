@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:project_progress/screens/home_screen.dart';
-import 'package:project_progress/utils/constants.dart';
+import 'package:project_progress/utils/style_constants.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -17,12 +17,12 @@ class _LoginScreenState extends State<LoginScreen> {
       children: <Widget>[
         Text(
           'Email',
-          style: loginLabelTextStyle,
+          style: StyleConstants.loginLabelTextStyle,
         ),
         SizedBox(height: 10.0),
         Container(
           alignment: Alignment.centerLeft,
-          decoration: loginBoxDecorationStyle,
+          decoration: StyleConstants.loginBoxDecorationStyle,
           height: 60.0,
           child: TextField(
             keyboardType: TextInputType.emailAddress,
@@ -38,7 +38,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 color: Colors.white,
               ),
               hintText: 'Enter your Email',
-              hintStyle: loginHintTextStyle,
+              hintStyle: StyleConstants.loginHintTextStyle,
             ),
           ),
         ),
@@ -52,12 +52,12 @@ class _LoginScreenState extends State<LoginScreen> {
       children: <Widget>[
         Text(
           'Password',
-          style: loginLabelTextStyle,
+          style: StyleConstants.loginLabelTextStyle,
         ),
         SizedBox(height: 10.0),
         Container(
           alignment: Alignment.centerLeft,
-          decoration: loginBoxDecorationStyle,
+          decoration: StyleConstants.loginBoxDecorationStyle,
           height: 60.0,
           child: TextField(
             obscureText: true,
@@ -73,7 +73,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 color: Colors.white,
               ),
               hintText: 'Enter your Password',
-              hintStyle: loginHintTextStyle,
+              hintStyle: StyleConstants.loginHintTextStyle,
             ),
           ),
         ),
@@ -89,7 +89,7 @@ class _LoginScreenState extends State<LoginScreen> {
         padding: EdgeInsets.only(right: 0.0),
         child: Text(
           'Forgot Password?',
-          style: loginLabelTextStyle,
+          style: StyleConstants.loginLabelTextStyle,
         ),
       ),
     );
@@ -115,7 +115,7 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
           Text(
             'Remember me',
-            style: loginLabelTextStyle,
+            style: StyleConstants.loginLabelTextStyle,
           ),
         ],
       ),
@@ -163,7 +163,7 @@ class _LoginScreenState extends State<LoginScreen> {
         SizedBox(height: 20.0),
         Text(
           'Sign in with',
-          style: loginLabelTextStyle,
+          style: StyleConstants.loginLabelTextStyle,
         ),
       ],
     );
