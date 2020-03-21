@@ -2,8 +2,8 @@ import 'package:avatar_glow/avatar_glow.dart';
 import 'package:flutter/material.dart';
 import 'package:liquid_swipe/Constants/Helpers.dart';
 import 'package:liquid_swipe/liquid_swipe.dart';
-import 'package:project_progress/screens/login_screen.dart';
 import 'package:project_progress/utils/style_constants.dart';
+import 'login_page.dart';
 
 import 'home_screen.dart';
 
@@ -171,7 +171,7 @@ class _OnboardingScreen extends State<OnboardingScreen> {
 
   Widget skipButton(BuildContext context){
     return FlatButton(
-      onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => LoginScreen())),
+      onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => LoginPage())),
       child: Text(
         'Skip',
         style: TextStyle(
@@ -231,7 +231,7 @@ class FinalScreen extends StatelessWidget {
                   ),
                   iconSize: 40,
                   onPressed: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (_) => LoginScreen()
+                    Navigator.push(context, MaterialPageRoute(builder: (_) => LoginPage()
                     )
                     );
                   }

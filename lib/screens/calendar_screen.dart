@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:project_progress/screens/entry_screen.dart';
 import 'package:project_progress/screens/home_screen.dart';
 import 'package:project_progress/screens/onboarding_screen.dart';
 import 'package:project_progress/widgets/calendar_widget.dart';
@@ -11,6 +10,9 @@ import 'package:intl/intl.dart';
 
 
 class Calendar extends StatefulWidget{
+  Calendar({Key key, this.uid}) : super(key: key);
+  final String uid;
+
   @override
   _Calendar createState() => _Calendar();
 }
@@ -46,7 +48,6 @@ class _Calendar extends State<Calendar>{
           setState(() {
             //_pinPillPosition = 0;
             //_pinPillup = !_pinPillup;
-            Navigator.push(context, MaterialPageRoute(builder: (context) => EntryPage()));
           });
         },
         backgroundColor: Color(0xFF30A9B2),

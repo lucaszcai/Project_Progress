@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:project_progress/utils/graph_types.dart';
 
 class Stats extends StatefulWidget{
   @override

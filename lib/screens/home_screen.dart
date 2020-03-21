@@ -11,6 +11,8 @@ import 'community_screen.dart';
 
 
 class HomeScreen extends StatefulWidget {
+  HomeScreen({Key key, this.uid}) : super(key: key);
+  final String uid;
 
   @override
   _HomeScreen createState() => _HomeScreen();
