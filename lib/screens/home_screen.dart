@@ -1,8 +1,6 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 
-import 'package:liquid_swipe/Constants/Helpers.dart';
-import 'package:liquid_swipe/liquid_swipe.dart';
 import 'package:project_progress/screens/profile_screen.dart';
 import 'package:project_progress/screens/stats_screen.dart';
 

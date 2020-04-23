@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:project_progress/screens/entry_screen.dart';
 import 'package:project_progress/screens/home_screen.dart';
 import 'package:project_progress/screens/onboarding_screen.dart';
 import 'package:project_progress/widgets/calendar_widget.dart';
@@ -48,6 +49,10 @@ class _Calendar extends State<Calendar>{
           setState(() {
             //_pinPillPosition = 0;
             //_pinPillup = !_pinPillup;
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => EntryScreen()),
+            );
           });
         },
         backgroundColor: Color(0xFF30A9B2),
