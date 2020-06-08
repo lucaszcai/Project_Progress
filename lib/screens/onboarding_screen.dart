@@ -1,9 +1,8 @@
 import 'package:avatar_glow/avatar_glow.dart';
 import 'package:flutter/material.dart';
-import 'package:liquid_swipe/Constants/Helpers.dart';
 import 'package:liquid_swipe/liquid_swipe.dart';
-import 'package:project_progress/screens/login_screen.dart';
-import 'package:project_progress/utils/constants.dart';
+import 'package:project_progress/utils/style_constants.dart';
+import 'login_page.dart';
 
 import 'home_screen.dart';
 
@@ -53,10 +52,10 @@ class _OnboardingScreen extends State<OnboardingScreen> {
                             child: Column(
                               children: <Widget>[
                                 Text(
-                                    'Track your mood and', style: onboardingText
+                                    'Track your mood and', style: StyleConstants.onboardingText
                                 ),
                                 Text('see changes over time',
-                                    style: onboardingText
+                                    style: StyleConstants.onboardingText
                                 ),
                               ],
                             )
@@ -97,7 +96,7 @@ class _OnboardingScreen extends State<OnboardingScreen> {
                             padding: const EdgeInsets.all(16.0
                             ),
                             child: Text('Write notes for your future self',
-                                style: onboardingText
+                                style: StyleConstants.onboardingText
                             ),
                           ),
                         ),
@@ -138,10 +137,10 @@ class _OnboardingScreen extends State<OnboardingScreen> {
                           child: Column(
                               children: <Widget>[
                                 Text('Connect with a community of',
-                                    style: onboardingText
+                                    style: StyleConstants.onboardingText
                                 ),
                                 Text(
-                                    'diverse individuals', style: onboardingText
+                                    'diverse individuals', style: StyleConstants.onboardingText
                                 ),
                               ]
                           ),
@@ -171,7 +170,7 @@ class _OnboardingScreen extends State<OnboardingScreen> {
 
   Widget skipButton(BuildContext context){
     return FlatButton(
-      onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => LoginScreen())),
+      onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => LoginPage())),
       child: Text(
         'Skip',
         style: TextStyle(
@@ -220,7 +219,7 @@ class FinalScreen extends StatelessWidget {
               Center(
                 child: Text(
                   'Begin your journey today',
-                  style: onboardingText,
+                  style: StyleConstants.onboardingText,
                 ),
               ),
               SizedBox(height: 30,
@@ -231,7 +230,7 @@ class FinalScreen extends StatelessWidget {
                   ),
                   iconSize: 40,
                   onPressed: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (_) => LoginScreen()
+                    Navigator.push(context, MaterialPageRoute(builder: (_) => LoginPage()
                     )
                     );
                   }
@@ -317,7 +316,7 @@ class _FirstScreen extends State<FirstScreen> {
                   child: Container(
                     child: Text(
                         'Welcome to Project Progress',
-                    style: onboardingText,),
+                    style: StyleConstants.onboardingText,),
                   ),
                 ),
               ),

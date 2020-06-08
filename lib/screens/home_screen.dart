@@ -1,8 +1,6 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 
-import 'package:liquid_swipe/Constants/Helpers.dart';
-import 'package:liquid_swipe/liquid_swipe.dart';
 import 'package:project_progress/screens/profile_screen.dart';
 import 'package:project_progress/screens/stats_screen.dart';
 
@@ -11,6 +9,8 @@ import 'community_screen.dart';
 
 
 class HomeScreen extends StatefulWidget {
+  HomeScreen({Key key, this.uid}) : super(key: key);
+  final String uid;
 
   @override
   _HomeScreen createState() => _HomeScreen();

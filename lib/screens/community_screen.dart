@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:project_progress/widgets/chat_selector.dart';
+import 'package:project_progress/widgets/friendslist_widget.dart';
 
 class Community extends StatefulWidget{
   @override
@@ -9,9 +11,13 @@ class _Community extends State<Community>{
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      //decoration: BoxDecoration(color: Colors.blueAccent),
-      child: Center(child: Text('Community')),
+    return Scaffold(
+      body: Column(
+        children: <Widget>[
+          ChatSelector(),
+          FriendsList(),
+        ],
+      ),
     );
   }
 }
