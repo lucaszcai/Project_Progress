@@ -45,6 +45,12 @@ class ChatSelector extends StatelessWidget{
                   leading: Icon(Icons.school),
                   title: Text("School Chat"),
                   trailing: Icon(Icons.keyboard_arrow_right),
+                  onTap: (){
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => ChatScreen()),
+                    );
+                  },
                 ),
                 ListTile(
                   leading: Icon(Icons.chat_bubble),

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:project_progress/screens/entry_screen.dart';
 import 'package:project_progress/screens/home_screen.dart';
 import 'package:project_progress/screens/onboarding_screen.dart';
-import 'package:project_progress/widgets/calendar_widget.dart';
 import 'package:swipedetector/swipedetector.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:swipedetector/swipedetector.dart';
@@ -65,7 +64,7 @@ class _Calendar extends State<Calendar>{
             Column(
                 children: <Widget>[
                   SizedBox(height: MediaQuery.of(context).size.height * 0.05,),
-                  CalendarWidget(calendarController: _calendarController)
+                  _buildCalendar()
                 ]),
             AnimatedPositioned(
               bottom: _pinPillup ? _pinPillPosition = 0 : _pinPillPosition = -500,
@@ -222,6 +221,7 @@ class _Calendar extends State<Calendar>{
       //color: Color(0xff465466),
       //color: Colors.white,
       child: TableCalendar(
+        onDaySelected:_onDaySelected,
         locale: 'en_US',
         //events: _selectedDay,
         calendarController: _calendarController,
@@ -232,7 +232,6 @@ class _Calendar extends State<Calendar>{
         availableCalendarFormats: const {
           CalendarFormat.month: 'Month',
         },
-        onDayLongPressed: _onDaySelected,
         calendarStyle: CalendarStyle(
           weekdayStyle: TextStyle(color: Colors.black),
           weekendStyle: TextStyle(color: Colors.red),
