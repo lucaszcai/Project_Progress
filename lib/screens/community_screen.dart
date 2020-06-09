@@ -1,11 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:project_progress/screens/chat_screen.dart';
 import 'package:uuid/uuid.dart';
 
 class CommunityPage extends StatefulWidget {
-  CommunityPage({Key key, this.title, this.user}) : super(key: key);
+  CommunityPage({Key key, this.title}) : super(key: key);
 
   // This widget is the home page of your application. It is stateful, meaning
   // that it has a State object (defined below) that contains fields that affect
@@ -17,7 +18,6 @@ class CommunityPage extends StatefulWidget {
   // always marked "final".
 
   final String title;
-  final String user;
 
   @override
   _CommunityPageState createState() => _CommunityPageState();
@@ -32,6 +32,8 @@ class _CommunityPageState extends State<CommunityPage> {
 
 
   List<Widget> chats = new List<Widget>();
+  
+  String user;
 
   ScrollController scrollController = ScrollController();
 
@@ -39,9 +41,18 @@ class _CommunityPageState extends State<CommunityPage> {
   @override
   void initState() {
     getChats();
+    getCurUser();
     super.initState();
   }
 
+  
+  Future getCurUser() async{
+    final FirebaseUser us = await FirebaseAuth.instance.currentUser();
+    setState(() {
+      user = us.email;
+    });
+
+  }
   @override
   Widget build(BuildContext context) {
     if(chats[0].toStringShort() != "SizedBox") {
@@ -77,7 +88,7 @@ class _CommunityPageState extends State<CommunityPage> {
     String s = uid.v1();
     if(email.length>0)
       await _firestore.collection('chats').add({
-        'user1':widget.user,
+        'user1':user,
         'user2':email,
         'chatid':s,
         'calendarshare':0
@@ -97,7 +108,10 @@ class _CommunityPageState extends State<CommunityPage> {
           leading: Icon(Icons.add, color: Colors.black,),
           title: Text("School Chat", style: TextStyle(color: Colors.black),),
           onTap: () {
-
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => ChatScreen(user:user, chatId: 'global',)),
+            );
           },
         ),
       ),
@@ -126,7 +140,7 @@ class _CommunityPageState extends State<CommunityPage> {
         .then((QuerySnapshot snapshot) {
       for (DocumentSnapshot d in snapshot.documents) {
         setState(() {
-          if (d.data['user1'] == widget.user) {
+          if (d.data['user1'] == user) {
             String s = d.data['user2'];
             chats.add(
               Card(
@@ -138,14 +152,14 @@ class _CommunityPageState extends State<CommunityPage> {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => ChatScreen(user:widget.user, chatId: d.data['chatid'],)),
+                      MaterialPageRoute(builder: (context) => ChatScreen(user:user, chatId: d.data['chatid'],)),
                     );
                   },
                 ),
               ),
             );
           } else {
-            if (d.data['user2'] == widget.user) {
+            if (d.data['user2'] == user) {
               String s = d.data['user1'];
               chats.add(
                 Card(
@@ -154,7 +168,7 @@ class _CommunityPageState extends State<CommunityPage> {
                     onTap: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => ChatScreen(user:widget.user, chatId: d.data['chatid'],)),
+                        MaterialPageRoute(builder: (context) => ChatScreen(user:user, chatId: d.data['chatid'],)),
                       );
                     },
                   ),
