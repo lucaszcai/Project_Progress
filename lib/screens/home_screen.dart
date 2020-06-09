@@ -22,7 +22,7 @@ class _HomeScreen extends State<HomeScreen> {
   var _pageOptions = [
     Calendar(),
     Stats(),
-    Community(),
+    CommunityPage(),
     Profile(),
   ];
 

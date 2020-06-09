@@ -1,18 +1,14 @@
-import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:project_progress/widgets/widgets.dart';
 bool wasCorrect;
 
 class ChatScreen extends StatefulWidget {
 
-  final bool bot;
   final String chatId;
   final String user;
 
-  const ChatScreen({Key key, this.bot, this.chatId, this.user})
+  const ChatScreen({Key key, this.chatId, this.user})
       : super(key: key);
 
   @override
@@ -20,36 +16,13 @@ class ChatScreen extends StatefulWidget {
 }
 
 class _ChatScreenState extends State<ChatScreen> {
-  bool _showBottom = false;
   TextEditingController textInput = new TextEditingController();
-  String chatId;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
 
-    setInitParams();
-  }
-
-  Future setInitParams() async {
-    await Firestore.instance
-        .collection('chats')
-        .getDocuments()
-        .then((snapshot) {
-      for (DocumentSnapshot ds in snapshot.documents) {
-        if (ds.data["uid1"] == widget.user && ds.data["active1"] == true) {
-          setState(() {
-            chatId = ds.documentID;
-          });
-        }
-        if (ds.data["uid2"] == widget.user && ds.data["active2"] == true) {
-          setState(() {
-            chatId = ds.documentID;
-          });
-        }
-      }
-    });
   }
 
   Future sendMessage(String message) async {
@@ -58,7 +31,7 @@ class _ChatScreenState extends State<ChatScreen> {
     await Firestore.instance.collection("messages").add({
       'sender': widget.user,
       'message': message,
-      'chatid': chatId,
+      'chatid': widget.chatId,
       'date': DateTime.now().millisecondsSinceEpoch.toString()
     });
     scrollController.animateTo(
@@ -101,7 +74,7 @@ class _ChatScreenState extends State<ChatScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Text(
-                  "Cybdom Tech",
+                  "Project Progress",
                   style: Theme.of(context).textTheme.subhead,
                   overflow: TextOverflow.clip,
                 ),
@@ -138,7 +111,7 @@ class _ChatScreenState extends State<ChatScreen> {
                         List<Widget> messages = new List<Widget>();
 
                         for (DocumentSnapshot d in docs) {
-                          if (d.data['chatid'] == chatId) {
+                          if (d.data['chatid'] == widget.chatId) {
                             if (d.data['sender'] == widget.user) {
                               messages.add(SentMessageWidget(
                                 message: d.data["message"],
