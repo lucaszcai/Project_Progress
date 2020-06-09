@@ -15,15 +15,11 @@ class RegisterPage extends StatefulWidget {
 
 class _RegisterPageState extends State<RegisterPage> {
   final GlobalKey<FormState> _registerFormKey = GlobalKey<FormState>();
-  TextEditingController firstNameInputController;
-  TextEditingController lastNameInputController;
   TextEditingController emailInputController;
   TextEditingController pwdInputController;
 
   @override
   initState() {
-    firstNameInputController = new TextEditingController();
-    lastNameInputController = new TextEditingController();
     emailInputController = new TextEditingController();
     pwdInputController = new TextEditingController();
     super.initState();
@@ -109,64 +105,6 @@ class _RegisterPageState extends State<RegisterPage> {
                             borderRadius: BorderRadius.circular(15.0),
                             borderSide: BorderSide(color: Colors.white),
                           ),
-                          labelText: 'First Name*',
-                          hintText: "John"),
-                      controller: firstNameInputController,
-                    ),
-                  ),
-                  SizedBox(height: MediaQuery.of(context).size.height / 30,),
-                  Container(
-                    child: TextFormField(
-                        style: TextStyle(
-                          color: Colors.white,
-                        ),
-                        decoration: InputDecoration(
-                            labelStyle: TextStyle(
-                              color: Colors.white,
-                            ),
-                            hintStyle: TextStyle(
-                              color: Colors.white.withAlpha(100),
-                            ),
-                            hoverColor: Colors.white,
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(15.0),
-                              borderSide: BorderSide(color: Colors.white),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(15.0),
-                              borderSide: BorderSide(color: Colors.white),
-                            ),
-                            labelText: 'Last Name*',
-                            hintText: "Doe"),
-                        controller: lastNameInputController,
-                        validator: (value) {
-                          if (value.length < 3) {
-                            return "Please enter a valid last name.";
-                          }
-                        }),
-                  ),
-                  SizedBox(height: MediaQuery.of(context).size.height / 30,),
-                  Container(
-                    child: TextFormField(
-                      style: TextStyle(
-                        color: Colors.white,
-                      ),
-                      decoration: InputDecoration(
-                          labelStyle: TextStyle(
-                            color: Colors.white,
-                          ),
-                          hintStyle: TextStyle(
-                            color: Colors.white.withAlpha(100),
-                          ),
-                          hoverColor: Colors.white,
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(15.0),
-                            borderSide: BorderSide(color: Colors.white),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(15.0),
-                            borderSide: BorderSide(color: Colors.white),
-                          ),
                           labelText: 'Email*',
                           hintText: "john.doe@gmail.com"),
                       controller: emailInputController,
@@ -228,8 +166,6 @@ class _RegisterPageState extends State<RegisterPage> {
                               .document(currentUser.user.uid)
                               .setData({
                             "uid": currentUser.user.uid,
-                            "fname": firstNameInputController.text,
-                            "surname": lastNameInputController.text,
                             "email": emailInputController.text,
                           });
                           print("Done");
@@ -240,8 +176,6 @@ class _RegisterPageState extends State<RegisterPage> {
                                       uid: currentUser.user.uid,
                                     )),
                           );
-                          firstNameInputController.clear();
-                          lastNameInputController.clear();
                           emailInputController.clear();
                           pwdInputController.clear();
                         });

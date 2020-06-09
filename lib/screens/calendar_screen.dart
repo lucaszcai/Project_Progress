@@ -1,4 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:project_progress/models/Entry.dart';
+import 'package:project_progress/models/user_model.dart';
 import 'package:project_progress/screens/entry_screen.dart';
 import 'package:project_progress/screens/home_screen.dart';
 import 'package:project_progress/screens/onboarding_screen.dart';
@@ -11,8 +15,7 @@ import 'package:intl/intl.dart';
 
 
 class Calendar extends StatefulWidget{
-  Calendar({Key key, this.uid}) : super(key: key);
-  final String uid;
+  Calendar({Key key}) : super(key: key);
 
   @override
   _Calendar createState() => _Calendar();
@@ -27,11 +30,13 @@ class _Calendar extends State<Calendar>{
   bool _pinPillup = false;
 
   DateTime selectedDate;
+  User currentUser;
 
   @override
   void initState() {
     super.initState();
     _calendarController = CalendarController();
+    getCurrentUser();
   }
 
   @override
@@ -40,12 +45,29 @@ class _Calendar extends State<Calendar>{
     super.dispose();
   }
 
+  getCurrentUser() async {
+    FirebaseUser holdUser = await FirebaseAuth.instance.currentUser();
+    DocumentSnapshot userData = await Firestore.instance.collection('users').document(holdUser.uid).get();
+    setState(() {
+      currentUser = User.fromSnapshot(userData);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
-        onPressed: (){
+        onPressed: () async {
+          print(currentUser.uid);
+          Entry entry = Entry(mood: 5, water: 10, note: 'test', date: Timestamp.fromDate(DateTime.now()));
+          await currentUser.reference.collection('entries').add(entry.toJson());
+          DocumentSnapshot userData = await Firestore.instance.collection('users').document(currentUser.uid).get();
+          print(userData.data);
+          User userSnapshot = User.fromSnapshot(userData);
+          print('UID: ' + userSnapshot.uid + ' Email: ' + userSnapshot.email);
+          QuerySnapshot userEntries = await userSnapshot.reference.collection('entries').getDocuments();
+          print('entries: ' + userEntries.documents.toString());
           setState(() {
             //_pinPillPosition = 0;
             //_pinPillup = !_pinPillup;

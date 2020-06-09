@@ -14,8 +14,8 @@ class _Community extends State<Community>{
     return Scaffold(
       body: Column(
         children: <Widget>[
-          ChatSelector(),
-          FriendsList(),
+          //ChatSelector(),
+          //FriendsList(),
         ],
       ),
     );
