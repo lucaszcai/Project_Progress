@@ -1,164 +1,182 @@
-//import 'package:flutter/material.dart';
-//import 'package:project_progress/models/user_model.dart';
-//
-//class ChatScreen extends StatefulWidget{
-//
-//  final User user;
-//
-//  ChatScreen({this.user});
-//
-//  @override
-//  _ChatScreenState createState() => _ChatScreenState();
-//}
-//
-//class _ChatScreenState extends State<ChatScreen>{
-//
-//  _buildMessage(Message message, bool isMe){
-//
-//    final Container msg = Container(
-//      margin: isMe ? EdgeInsets.only(top: 8.0, bottom: 8.0, left: 80.0)
-//          :  EdgeInsets.only(top: 8.0, bottom: 8.0,
-//      ),
-//
-//      padding: EdgeInsets.symmetric(horizontal: 25.0, vertical: 15.0),
-//      width: MediaQuery.of(context).size.width,
-//      decoration: BoxDecoration(
-//          color: isMe ? Theme.of(context).accentColor : Color(0xFFFFEFEE),
-//          borderRadius: isMe ?
-//          BorderRadius.only(
-//            topLeft: Radius.circular(15.0),
-//            bottomLeft: Radius.circular(15.0),
-//          ):
-//          BorderRadius.only(
-//            topRight: Radius.circular(15.0),
-//            bottomRight: Radius.circular(15.0),
-//          )
-//      ),
-//      child: Column(
-//        crossAxisAlignment: CrossAxisAlignment.start,
-//        children: <Widget>[
-//          Text(message.time, style: TextStyle(color: Colors.blueGrey, fontSize: 16.0, fontWeight: FontWeight.w600),),
-//          SizedBox(height: 8.0,),
-//          Text(message.text, style: TextStyle(color: Colors.blueGrey, fontSize: 16.0, fontWeight: FontWeight.w600),)
-//        ],
-//      ),
-//    );
-//    if(isMe){
-//      return msg;
-//    }
-//
-//    return(Row(
-//      children: <Widget>[
-//        Expanded(
-//          child: msg,
-//        ),
-//
-//        IconButton(
-//          icon: message.isLiked ? Icon(Icons.favorite) : Icon(Icons.favorite_border),
-//          iconSize: 30.0,
-//          color: message.isLiked ? Theme.of(context).primaryColor : Colors.blueGrey,
-//          onPressed: (){},
-//        ),
-//      ],
-//    )
-//    );
-//  }
-//
-//  _buildMessageComposer(){
-//    return Container(
-//      padding: EdgeInsets.symmetric(horizontal: 8.0),
-//      height: 70.0,
-//      color: Colors.white,
-//      child: Row(
-//        children: <Widget>[
-//          IconButton(icon: Icon(Icons.photo),
-//            iconSize: 25.0,
-//            color: Theme.of(context).primaryColor,
-//            onPressed: (){},
-//          ),
-//          Expanded(
-//            child: TextField(
-//              textCapitalization: TextCapitalization.sentences,
-//              onChanged: (value){},
-//              decoration: InputDecoration.collapsed(
-//                hintText: 'Send a message...',
-//              ),
-//            ),
-//          ),
-//          IconButton(icon: Icon(Icons.send),
-//            iconSize: 25.0,
-//            color: Theme.of(context).primaryColor,
-//            onPressed: (){},
-//          ),
-//
-//        ],
-//      ),
-//    );
-//  }
-//
-//  @override
-//  Widget build(BuildContext context) {
-//    return Scaffold(
-//        backgroundColor: Theme.of(context).primaryColor,
-//        appBar: AppBar(
-//          centerTitle: true,
-//          title: Text(widget.user.email,
-//            style: TextStyle(
-//              fontSize: 28.0,
-//              fontWeight: FontWeight.bold,
-//            ),
-//          ),
-//          elevation: 0.0,
-//          actions: <Widget>[
-//            IconButton(
-//              icon: Icon(Icons.more_horiz),
-//              iconSize: 30.0,
-//              color: Colors.white,
-//              onPressed: (){},
-//            ),
-//          ],
-//        ),
-//        body: GestureDetector(
-//          onTap: () => FocusScope.of(context).unfocus(),
-//          child: Column(
-//            children: <Widget>[
-//              Expanded(
-//                child: Container(
-//                  decoration: BoxDecoration(
-//                    color: Colors.white,
-//                    borderRadius: BorderRadius.only(
-//                      topLeft: Radius.circular(30.0),
-//                      topRight: Radius.circular(30.0),
-//                    ),
-//                  ),
-//                  child: ClipRRect(
-//                    borderRadius: BorderRadius.only(
-//                      topLeft: Radius.circular(30.0),
-//                      topRight: Radius.circular(30.0),
-//                    ),
-//                    child: Padding(
-//                      padding: const EdgeInsets.only(top: 15.0),
-//                      child: ListView.builder(
-//                        reverse: true,
-//                        itemCount: messages.length,
-//                        itemBuilder: (BuildContext, int index){
-//                          final Message message = messages[index];
-//                          final bool isMe = message.sender.uid == currentUser.uid;
-//                          return _buildMessage(message, isMe);
-//                        },
-//                      ),
-//                    ),
-//                  ),
-//                ),
-//              ),
-//
-//              _buildMessageComposer(),
-//
-//
-//            ],
-//          ),
-//        )
-//    );
-//
-//  }
-//}
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
+import 'package:project_progress/widgets/widgets.dart';
+bool wasCorrect;
+
+class ChatScreen extends StatefulWidget {
+
+  final String chatId;
+  final String user;
+
+  const ChatScreen({Key key, this.chatId, this.user})
+      : super(key: key);
+
+  @override
+  _ChatScreenState createState() => _ChatScreenState();
+}
+
+class _ChatScreenState extends State<ChatScreen> {
+  TextEditingController textInput = new TextEditingController();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+  }
+
+  Future sendMessage(String message) async {
+    print("SENDING MESSAGE");
+    textInput.clear();
+    await Firestore.instance.collection("messages").add({
+      'sender': widget.user,
+      'message': message,
+      'chatid': widget.chatId,
+      'date': DateTime.now().millisecondsSinceEpoch.toString()
+    });
+    scrollController.animateTo(
+      scrollController.position.maxScrollExtent,
+      curve: Curves.easeOut,
+      duration: const Duration(milliseconds: 300),
+    );
+  }
+
+  ScrollController scrollController = ScrollController();
+
+  Future<void> callback() async {
+    print(widget.user);
+    if (textInput.text.length > 0) {
+      scrollController.animateTo(
+        scrollController.position.maxScrollExtent,
+        curve: Curves.easeOut,
+        duration: const Duration(milliseconds: 300),
+      );
+    }
+  }
+
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        iconTheme: IconThemeData(color: Colors.black),
+        title: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            MyCircleAvatar(
+              imgUrl: 'https://identicons.github.com/jasonlong.png',
+            ),
+            SizedBox(width: 15),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(
+                  "Project Progress",
+                  style: Theme.of(context).textTheme.subhead,
+                  overflow: TextOverflow.clip,
+                ),
+                Text(
+                  "Online",
+                  style: Theme.of(context).textTheme.subtitle.apply(
+                    color: Colors.orangeAccent,
+                  ),
+                )
+              ],
+            )
+          ],
+        ),
+      ),
+      body: Stack(
+        children: <Widget>[
+          Positioned.fill(
+            child: Column(
+              children: <Widget>[
+                Expanded(
+                    child: StreamBuilder<QuerySnapshot>(
+                      stream: Firestore.instance
+                          .collection("messages")
+                          .orderBy("date")
+                          .snapshots(),
+                      builder: (context, snapshot) {
+                        if (!snapshot.hasData)
+                          return Center(
+                            child: CircularProgressIndicator(),
+                          );
+
+                        List<DocumentSnapshot> docs = snapshot.data.documents;
+
+                        List<Widget> messages = new List<Widget>();
+
+                        for (DocumentSnapshot d in docs) {
+                          if (d.data['chatid'] == widget.chatId) {
+                            if (d.data['sender'] == widget.user) {
+                              messages.add(SentMessageWidget(
+                                message: d.data["message"],
+                              ));
+                            } else {
+                              messages.add(ReceivedMessagesWidget(
+                                  message: d.data["message"]));
+                            }
+                          }
+                        }
+                        return ListView(
+                          controller: scrollController,
+                          children: messages,
+                        );
+                      },
+                    )),
+                Container(
+                  margin: EdgeInsets.all(15.0),
+                  height: 61,
+                  child: Row(
+                    children: <Widget>[
+                      Expanded(
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(35.0),
+                            boxShadow: [
+                              BoxShadow(
+                                  offset: Offset(0, 3),
+                                  blurRadius: 5,
+                                  color: Colors.grey)
+                            ],
+                          ),
+                          child: Row(
+                            children: <Widget>[
+                              SizedBox(
+                                width: 20,
+                              ),
+                              Expanded(
+                                child: TextField(
+                                  controller: textInput,
+                                  decoration: InputDecoration(
+                                      hintText: "Type Something...",
+                                      border: InputBorder.none),
+                                ),
+                              ),
+                              IconButton(
+                                  icon: Icon(Icons.send),
+                                  onPressed: () {
+                                    sendMessage(textInput.text);
+                                  }),
+                            ],
+                          ),
+                        ),
+                      ),
+                      SizedBox(width: 15),
+                    ],
+                  ),
+                )
+              ],
+            ),
+          ),
+
+        ],
+      ),
+    );
+  }
+}
