@@ -1,17 +1,14 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:project_progress/models/user_model.dart';
 import 'package:project_progress/screens/entry_screen.dart';
-import 'package:project_progress/screens/home_screen.dart';
-import 'package:project_progress/screens/onboarding_screen.dart';
-import 'package:swipedetector/swipedetector.dart';
 import 'package:table_calendar/table_calendar.dart';
-import 'package:swipedetector/swipedetector.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:intl/intl.dart';
 
-
 class Calendar extends StatefulWidget{
-  Calendar({Key key, this.uid}) : super(key: key);
-  final String uid;
+  Calendar({Key key}) : super(key: key);
 
   @override
   _Calendar createState() => _Calendar();
@@ -26,11 +23,13 @@ class _Calendar extends State<Calendar>{
   bool _pinPillup = false;
 
   DateTime selectedDate;
+  User currentUser;
 
   @override
   void initState() {
     super.initState();
     _calendarController = CalendarController();
+    getCurrentUser();
   }
 
   @override
@@ -39,12 +38,20 @@ class _Calendar extends State<Calendar>{
     super.dispose();
   }
 
+  getCurrentUser() async {
+    FirebaseUser holdUser = await FirebaseAuth.instance.currentUser();
+    DocumentSnapshot userData = await Firestore.instance.collection('users').document(holdUser.uid).get();
+    setState(() {
+      currentUser = User.fromSnapshot(userData);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
-        onPressed: (){
+        onPressed: () async {
           setState(() {
             //_pinPillPosition = 0;
             //_pinPillup = !_pinPillup;

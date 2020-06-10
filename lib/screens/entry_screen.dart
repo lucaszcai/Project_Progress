@@ -1,8 +1,13 @@
+import 'dart:math';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:project_progress/models/Entry.dart';
 import 'package:sleek_circular_slider/sleek_circular_slider.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+//import 'package:project_progress/utils/text_constants.dart';
 
 class EntryScreen extends StatefulWidget {
   EntryScreen({Key key, this.uid}) : super(key: key);
@@ -13,11 +18,24 @@ class EntryScreen extends StatefulWidget {
 }
 
 class _EntryScreenState extends State<EntryScreen> {
-  double hoursSlept = 5;
+  TextEditingController answerController;
+  TextEditingController noteController;
+  int mood;
+  int hoursSlept = 5;
+  int water = 5;
+  int activity;
+  int questionNumber;
+
+  @override
+  void initState() {
+    answerController = new TextEditingController();
+    noteController = new TextEditingController();
+    questionNumber = Random().nextInt(11);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return Scaffold(
       body: ListView(
         children: <Widget>[
@@ -47,6 +65,7 @@ class _EntryScreenState extends State<EntryScreen> {
             max: 12,
             onChange: (value) {
               print(value);
+              mood = value.round();
             },
           ),
 //          Container(
@@ -171,7 +190,7 @@ class _EntryScreenState extends State<EntryScreen> {
                           child: Icon(Icons.business_center),
                           color: Colors.white,
                           onPressed: () {
-                            print("pressed");
+                            activity = 0;
                           },
                         ),
                         FlatButton(
@@ -181,7 +200,7 @@ class _EntryScreenState extends State<EntryScreen> {
                           child: Icon(Icons.directions_bike),
                           color: Colors.white,
                           onPressed: () {
-                            print("pressed");
+                            activity = 1;
                           },
                         ),
                         FlatButton(
@@ -191,7 +210,7 @@ class _EntryScreenState extends State<EntryScreen> {
                           child: Icon(Icons.favorite),
                           color: Colors.white,
                           onPressed: () {
-                            print("pressed");
+                            activity = 2;
                           },
                         ),
                         FlatButton(
@@ -201,7 +220,7 @@ class _EntryScreenState extends State<EntryScreen> {
                           child: Icon(Icons.local_offer),
                           color: Colors.white,
                           onPressed: () {
-                            print("pressed");
+                            activity = 3;
                           },
                         ),
                         FlatButton(
@@ -211,7 +230,7 @@ class _EntryScreenState extends State<EntryScreen> {
                           child: Icon(Icons.supervisor_account),
                           color: Colors.white,
                           onPressed: () {
-                            print("pressed");
+                            activity = 4;
                           },
                         ),
                         FlatButton(
@@ -221,7 +240,7 @@ class _EntryScreenState extends State<EntryScreen> {
                           child: Icon(Icons.create),
                           color: Colors.white,
                           onPressed: () {
-                            print("pressed");
+                            activity = 5;
                           },
                         ),
                         FlatButton(
@@ -231,7 +250,7 @@ class _EntryScreenState extends State<EntryScreen> {
                           child: Icon(Icons.mood),
                           color: Colors.white,
                           onPressed: () {
-                            print("pressed");
+                            activity = 6;
                           },
                         ),
                         FlatButton(
@@ -241,7 +260,7 @@ class _EntryScreenState extends State<EntryScreen> {
                           child: Icon(Icons.lightbulb_outline),
                           color: Colors.white,
                           onPressed: () {
-                            print("pressed");
+                            activity = 7;
                           },
                         ),
                         FlatButton(
@@ -251,17 +270,56 @@ class _EntryScreenState extends State<EntryScreen> {
                           child: Icon(Icons.add),
                           color: Colors.white,
                           onPressed: () {
-                            print("pressed");
+                            activity = 8;
                           },
                         ),
                       ],
                     ),
                   ),
                 ),
-                Image.asset('assets/illustrations/activities.png'),
               ],
             ),
           ),
+          Column(
+            children: [
+              /*Text(TextConstants().questions[questionNumber]),*/
+              TextField(
+                controller: answerController,
+              ),
+            ],
+          ),
+          Column(
+            children: [
+              TextField(
+                controller: noteController,
+                decoration: InputDecoration(
+                  hintText: 'Write a note!',
+                ),
+              ),
+            ],
+          ),
+          RaisedButton(
+            child: Text('Submit'),
+            onPressed: () async {
+              FirebaseUser userData = await FirebaseAuth.instance.currentUser();
+              String userUID = userData.uid;
+              Entry addEntry = new Entry(
+                  mood: mood,
+                  hoursSlept: hoursSlept,
+                  water: water,
+                  activity: activity,
+                  questionNumber: questionNumber,
+                  note: noteController.text,
+                  questionAnswer: answerController.text,
+                  date: Timestamp.now());
+              Firestore.instance
+                  .collection('users')
+                  .document(userUID)
+                  .collection('entries')
+                  .add(addEntry.toJson());
+              Navigator.pop(context);
+            },
+          )
         ],
       ),
     );
