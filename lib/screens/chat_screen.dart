@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:project_progress/widgets/widgets.dart';
+import 'package:profanity_filter/profanity_filter.dart';
 
 class ChatScreen extends StatefulWidget {
 
@@ -19,15 +20,26 @@ class _ChatScreenState extends State<ChatScreen> {
 
   @override
   void initState() {
+    // TODO: implement initState
     super.initState();
+
   }
 
   Future sendMessage(String message) async {
-    print("SENDING MESSAGE");
+    final filter = ProfanityFilter(); //Creates filter with default list.
+    String myString = 'you are an ass';
+
+    //To check if profanity exists
+    bool isProfane = filter.checkStringForProfanity(
+        myString); //Returns true since 'ass' is in profanity list.
+    if (isProfane) {
+      print('Profanity was detected');
+    }
+    
     textInput.clear();
     await Firestore.instance.collection("messages").add({
       'sender': widget.user,
-      'message': message,
+      'message': filter.censorString(message),
       'chatid': widget.chatId,
       'date': DateTime.now().millisecondsSinceEpoch.toString()
     });

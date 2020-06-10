@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:project_progress/models/Entry.dart';
 import 'package:sleek_circular_slider/sleek_circular_slider.dart';
-import 'package:project_progress/utils/text_constants.dart';
+//import 'package:project_progress/utils/text_constants.dart';
 
 class EntryScreen extends StatefulWidget {
   EntryScreen({Key key, this.selectedDate}) : super(key: key);
@@ -311,7 +311,7 @@ class _EntryScreenState extends State<EntryScreen> {
           ),
           Column(
             children: [
-              Text(TextConstants().questions[questionNumber]),
+              /*Text(TextConstants().questions[questionNumber]),*/
               TextField(
                 controller: answerController,
               ),
