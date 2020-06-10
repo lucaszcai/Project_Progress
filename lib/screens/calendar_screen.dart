@@ -1,17 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:project_progress/models/Entry.dart';
 import 'package:project_progress/models/user_model.dart';
 import 'package:project_progress/screens/entry_screen.dart';
-import 'package:project_progress/screens/home_screen.dart';
-import 'package:project_progress/screens/onboarding_screen.dart';
-import 'package:swipedetector/swipedetector.dart';
 import 'package:table_calendar/table_calendar.dart';
-import 'package:swipedetector/swipedetector.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:intl/intl.dart';
-
 
 class Calendar extends StatefulWidget{
   Calendar({Key key}) : super(key: key);
@@ -58,15 +52,6 @@ class _Calendar extends State<Calendar>{
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
         onPressed: () async {
-          print(currentUser.uid);
-          Entry entry = Entry(mood: 5, water: 10, note: 'test', date: Timestamp.fromDate(DateTime.now()));
-          await currentUser.reference.collection('entries').add(entry.toJson());
-          DocumentSnapshot userData = await Firestore.instance.collection('users').document(currentUser.uid).get();
-          print(userData.data);
-          User userSnapshot = User.fromSnapshot(userData);
-          print('UID: ' + userSnapshot.uid + ' Email: ' + userSnapshot.email);
-          QuerySnapshot userEntries = await userSnapshot.reference.collection('entries').getDocuments();
-          print('entries: ' + userEntries.documents.toString());
           setState(() {
             //_pinPillPosition = 0;
             //_pinPillup = !_pinPillup;

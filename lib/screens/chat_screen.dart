@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:project_progress/widgets/widgets.dart';
-bool wasCorrect;
 
 class ChatScreen extends StatefulWidget {
 
@@ -20,9 +19,7 @@ class _ChatScreenState extends State<ChatScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-
   }
 
   Future sendMessage(String message) async {
