@@ -10,8 +10,8 @@ import 'package:sleek_circular_slider/sleek_circular_slider.dart';
 import 'package:project_progress/utils/text_constants.dart';
 
 class EntryScreen extends StatefulWidget {
-  EntryScreen({Key key, this.uid}) : super(key: key);
-  final String uid;
+  EntryScreen({Key key, this.selectedDate}) : super(key: key);
+  final DateTime selectedDate;
 
   @override
   _EntryScreenState createState() => _EntryScreenState();
@@ -21,16 +21,21 @@ class _EntryScreenState extends State<EntryScreen> {
   TextEditingController answerController;
   TextEditingController noteController;
   int mood;
-  int hoursSlept = 5;
-  int water = 5;
+  int hoursSlept;
+  int water;
   int activity;
   int questionNumber;
+
+  double holdHoursSlept;
+  double holdWater;
 
   @override
   void initState() {
     answerController = new TextEditingController();
     noteController = new TextEditingController();
-    questionNumber = Random().nextInt(11);
+    questionNumber = Random().nextInt(15);
+    holdHoursSlept = 2.0;
+    holdWater = 2.0;
     super.initState();
   }
 
@@ -66,6 +71,30 @@ class _EntryScreenState extends State<EntryScreen> {
             onChange: (value) {
               print(value);
               mood = value.round();
+            },
+          ),
+          Text('How much water did you drink today?'),
+          Slider(
+            min: 0.0,
+            max: 12.0,
+            value: holdWater,
+            onChanged: (value) {
+              setState(() {
+                holdWater = value;
+                water = value.round();
+              });
+            },
+          ),
+          Text('How much did you sleep last night?'),
+          Slider(
+            min: 0.0,
+            max: 12.0,
+            value: holdHoursSlept,
+            onChanged: (value) {
+              setState(() {
+                holdHoursSlept = value;
+                hoursSlept = value.round();
+              });
             },
           ),
 //          Container(
@@ -311,7 +340,7 @@ class _EntryScreenState extends State<EntryScreen> {
                   questionNumber: questionNumber,
                   note: noteController.text,
                   questionAnswer: answerController.text,
-                  date: Timestamp.now());
+                  date: Timestamp.fromDate(widget.selectedDate));
               Firestore.instance
                   .collection('users')
                   .document(userUID)
