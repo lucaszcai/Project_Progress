@@ -30,6 +30,7 @@ dependencies:
   flutter_svg: ^0.17.3+1
   avatar_glow:
   uuid: ^2.0.2
+  profanity_filter: ^1.0.1
 
   flutter:
     sdk: flutter
