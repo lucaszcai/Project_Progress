@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:project_progress/models/user_model.dart';
 import 'package:project_progress/models/Entry.dart';
 import 'package:project_progress/screens/entry_screen.dart';
-import 'package:project_progress/utils/text_constants.dart';
+import 'package:project_progress/utils/entry_constants.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:intl/intl.dart';
@@ -28,6 +28,8 @@ class _Calendar extends State<Calendar> {
   DateTime selectedDate;
   Entry selectedDateEntry;
   User currentUser;
+
+  EntryConstants entryConstants = new EntryConstants();
 
   @override
   void initState() {
@@ -248,7 +250,7 @@ class _Calendar extends State<Calendar> {
                       ),
                     ),
                     Icon(
-                      Icons.directions_bike,
+                      entryConstants.activityIcons[selectedDateEntry.activity],
                     )
                   ],
                 ),
@@ -258,7 +260,7 @@ class _Calendar extends State<Calendar> {
                 child: Column(
                   children: [
                     Text('Question: ' +
-                        TextConstants()
+                        entryConstants
                             .questions[selectedDateEntry.questionNumber]),
                     Text('Answer: ' + selectedDateEntry.questionAnswer)
                   ],

@@ -1,4 +1,6 @@
-class TextConstants {
+import 'package:flutter/material.dart';
+
+class EntryConstants {
   List questions = [
     'What is something you do well?',
     'What are you grateful for?',
@@ -15,5 +17,17 @@ class TextConstants {
     'Write about something you feel you need to get down',
     'What\'s weighing you down?',
     'Where have you gotten better in the past month?',
+  ];
+
+  List activityIcons = [
+    Icons.business_center,
+    Icons.directions_bike,
+    Icons.explore,
+    Icons.golf_course,
+    Icons.supervisor_account,
+    Icons.create,
+    Icons.mood,
+    Icons.lightbulb_outline,
+    Icons.add,
   ];
 }
