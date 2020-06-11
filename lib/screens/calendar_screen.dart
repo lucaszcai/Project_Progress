@@ -20,10 +20,10 @@ class _Calendar extends State<Calendar> {
   CalendarController _calendarController;
   List<Entry> allEntries;
   bool doneLoading;
-  double _pinPillPosition = -500;
   bool dateHasEntry;
+  double _pinPillPosition = -500;
 
-  bool _pinPillup = false;
+  bool _pinPillUp = false;
 
   DateTime selectedDate;
   Entry selectedDateEntry;
@@ -39,7 +39,7 @@ class _Calendar extends State<Calendar> {
     allEntries = new List<Entry>();
     doneLoading = false;
     dateHasEntry = false;
-    getCurrentUser();
+    setUpCalendar();
   }
 
   @override
@@ -48,16 +48,19 @@ class _Calendar extends State<Calendar> {
     super.dispose();
   }
 
+  setUpCalendar() async {
+    await getCurrentUser();
+    print('done');
+    getEntries();
+  }
+
   getCurrentUser() async {
     FirebaseUser holdUser = await FirebaseAuth.instance.currentUser();
     DocumentSnapshot userData = await Firestore.instance
         .collection('users')
         .document(holdUser.uid)
         .get();
-    setState(() {
-      currentUser = User.fromSnapshot(userData);
-    });
-    getEntries();
+    currentUser = User.fromSnapshot(userData);
   }
 
   getEntries() async {
@@ -70,11 +73,33 @@ class _Calendar extends State<Calendar> {
         Entry createdEntry = Entry.fromSnapshot(entryDocs[i]);
         allEntries.add(createdEntry);
       }
+      initialDateSetup();
       setState(() {
         print('set');
         doneLoading = true;
       });
     });
+  }
+
+  initialDateSetup() async {
+    Entry foundEntry;
+    for (int i = 0; i < allEntries.length; i++) {
+      DateTime entryDate = allEntries[i].date.toDate();
+      if (selectedDate.day == entryDate.day &&
+          selectedDate.month == entryDate.month &&
+          selectedDate.year == entryDate.year) {
+        foundEntry = allEntries[i];
+        break;
+      }
+    }
+    if (foundEntry == null) {
+      _pinPillUp = false;
+      dateHasEntry = false;
+    } else {
+      selectedDateEntry = foundEntry;
+      _pinPillUp = true;
+      dateHasEntry = true;
+    }
   }
 
   @override
@@ -117,7 +142,7 @@ class _Calendar extends State<Calendar> {
               ]),
               AnimatedPositioned(
                 bottom:
-                    _pinPillup ? _pinPillPosition = 0 : _pinPillPosition = -500,
+                    _pinPillUp ? _pinPillPosition = 0 : _pinPillPosition = -500,
                 right: 0,
                 left: 0,
                 duration: Duration(milliseconds: 200),
@@ -308,10 +333,10 @@ class _Calendar extends State<Calendar> {
       selectedDate = day;
       selectedDateEntry = foundEntry;
       if (foundEntry == null) {
-        _pinPillup = false;
+        _pinPillUp = false;
         dateHasEntry = false;
       } else {
-        _pinPillup = true;
+        _pinPillUp = true;
         dateHasEntry = true;
       }
     });
