@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "543335453449",
+    "firebase_url": "https://project-progress-a1e48.firebaseio.com",
+    "project_id": "project-progress-a1e48",
+    "storage_bucket": "project-progress-a1e48.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:543335453449:android:ebc7e69d05dc4318d739d8",
+        "android_client_info": {
+          "package_name": "idea.crhs.project_progress"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "543335453449-1ml0uo5t0jj5sbe8bt0fl5v621ahd22i.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB4_9RFJXMPrqzaeGFMFl23sDRAOArpSBw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "543335453449-1ml0uo5t0jj5sbe8bt0fl5v621ahd22i.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "543335453449-8dnhnfg00aihvo5d76pop29qqof2r677.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "idea.crhs.projectProgress"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
