@@ -83,7 +83,7 @@ class _ChatScreenState extends State<ChatScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Text(
-                  "Project Progress",
+                  "Cinco Ranch High School",
                   style: Theme.of(context).textTheme.subhead,
                   overflow: TextOverflow.clip,
                 ),
@@ -97,6 +97,7 @@ class _ChatScreenState extends State<ChatScreen> {
             )
           ],
         ),
+        actions: [IconButton(icon: Icon(Icons.more_horiz),)],
       ),
       body: Stack(
         children: <Widget>[
