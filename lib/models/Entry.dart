@@ -24,7 +24,7 @@ class Entry {
   factory Entry.fromJson(Map<String, dynamic> json) {
     return Entry(
       mood: json['mood'] as int,
-      hoursSlept: json['sleep'] as int,
+      hoursSlept: json['hoursSlept'] as int,
       water: json['water'] as int,
       activity: json['activity'] as int,
       questionNumber: json['questionNumber'] as int,

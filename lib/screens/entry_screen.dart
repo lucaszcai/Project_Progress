@@ -7,11 +7,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:project_progress/models/Entry.dart';
 import 'package:sleek_circular_slider/sleek_circular_slider.dart';
-//import 'package:project_progress/utils/text_constants.dart';
+import 'package:project_progress/utils/entry_constants.dart';
 
 class EntryScreen extends StatefulWidget {
-  EntryScreen({Key key, this.uid}) : super(key: key);
-  final String uid;
+  EntryScreen({Key key, this.selectedDate}) : super(key: key);
+  final DateTime selectedDate;
 
   @override
   _EntryScreenState createState() => _EntryScreenState();
@@ -21,16 +21,23 @@ class _EntryScreenState extends State<EntryScreen> {
   TextEditingController answerController;
   TextEditingController noteController;
   int mood;
-  int hoursSlept = 5;
-  int water = 5;
+  int hoursSlept;
+  int water;
   int activity;
   int questionNumber;
+
+  double holdHoursSlept;
+  double holdWater;
+
+  EntryConstants entryConstants = new EntryConstants();
 
   @override
   void initState() {
     answerController = new TextEditingController();
     noteController = new TextEditingController();
-    questionNumber = Random().nextInt(11);
+    questionNumber = Random().nextInt(15);
+    holdHoursSlept = 2.0;
+    holdWater = 2.0;
     super.initState();
   }
 
@@ -66,6 +73,30 @@ class _EntryScreenState extends State<EntryScreen> {
             onChange: (value) {
               print(value);
               mood = value.round();
+            },
+          ),
+          Text('How much water did you drink today?'),
+          Slider(
+            min: 0.0,
+            max: 12.0,
+            value: holdWater,
+            onChanged: (value) {
+              setState(() {
+                holdWater = value;
+                water = value.round();
+              });
+            },
+          ),
+          Text('How much did you sleep last night?'),
+          Slider(
+            min: 0.0,
+            max: 12.0,
+            value: holdHoursSlept,
+            onChanged: (value) {
+              setState(() {
+                holdHoursSlept = value;
+                hoursSlept = value.round();
+              });
             },
           ),
 //          Container(
@@ -187,7 +218,7 @@ class _EntryScreenState extends State<EntryScreen> {
                           shape: CircleBorder(
                             side: BorderSide(color: Colors.black12),
                           ),
-                          child: Icon(Icons.business_center),
+                          child: Icon(entryConstants.activityIcons[0]),
                           color: Colors.white,
                           onPressed: () {
                             activity = 0;
@@ -197,7 +228,7 @@ class _EntryScreenState extends State<EntryScreen> {
                           shape: CircleBorder(
                             side: BorderSide(color: Colors.black12),
                           ),
-                          child: Icon(Icons.directions_bike),
+                          child: Icon(entryConstants.activityIcons[1]),
                           color: Colors.white,
                           onPressed: () {
                             activity = 1;
@@ -207,7 +238,7 @@ class _EntryScreenState extends State<EntryScreen> {
                           shape: CircleBorder(
                             side: BorderSide(color: Colors.black12),
                           ),
-                          child: Icon(Icons.favorite),
+                          child: Icon(entryConstants.activityIcons[2]),
                           color: Colors.white,
                           onPressed: () {
                             activity = 2;
@@ -217,7 +248,7 @@ class _EntryScreenState extends State<EntryScreen> {
                           shape: CircleBorder(
                             side: BorderSide(color: Colors.black12),
                           ),
-                          child: Icon(Icons.local_offer),
+                          child: Icon(entryConstants.activityIcons[3]),
                           color: Colors.white,
                           onPressed: () {
                             activity = 3;
@@ -227,7 +258,7 @@ class _EntryScreenState extends State<EntryScreen> {
                           shape: CircleBorder(
                             side: BorderSide(color: Colors.black12),
                           ),
-                          child: Icon(Icons.supervisor_account),
+                          child: Icon(entryConstants.activityIcons[4]),
                           color: Colors.white,
                           onPressed: () {
                             activity = 4;
@@ -237,7 +268,7 @@ class _EntryScreenState extends State<EntryScreen> {
                           shape: CircleBorder(
                             side: BorderSide(color: Colors.black12),
                           ),
-                          child: Icon(Icons.create),
+                          child: Icon(entryConstants.activityIcons[5]),
                           color: Colors.white,
                           onPressed: () {
                             activity = 5;
@@ -247,7 +278,7 @@ class _EntryScreenState extends State<EntryScreen> {
                           shape: CircleBorder(
                             side: BorderSide(color: Colors.black12),
                           ),
-                          child: Icon(Icons.mood),
+                          child: Icon(entryConstants.activityIcons[6]),
                           color: Colors.white,
                           onPressed: () {
                             activity = 6;
@@ -257,7 +288,7 @@ class _EntryScreenState extends State<EntryScreen> {
                           shape: CircleBorder(
                             side: BorderSide(color: Colors.black12),
                           ),
-                          child: Icon(Icons.lightbulb_outline),
+                          child: Icon(entryConstants.activityIcons[7]),
                           color: Colors.white,
                           onPressed: () {
                             activity = 7;
@@ -267,7 +298,7 @@ class _EntryScreenState extends State<EntryScreen> {
                           shape: CircleBorder(
                             side: BorderSide(color: Colors.black12),
                           ),
-                          child: Icon(Icons.add),
+                          child: Icon(entryConstants.activityIcons[8]),
                           color: Colors.white,
                           onPressed: () {
                             activity = 8;
@@ -282,7 +313,7 @@ class _EntryScreenState extends State<EntryScreen> {
           ),
           Column(
             children: [
-              /*Text(TextConstants().questions[questionNumber]),*/
+              Text(entryConstants.questions[questionNumber]),
               TextField(
                 controller: answerController,
               ),
@@ -311,7 +342,7 @@ class _EntryScreenState extends State<EntryScreen> {
                   questionNumber: questionNumber,
                   note: noteController.text,
                   questionAnswer: answerController.text,
-                  date: Timestamp.now());
+                  date: Timestamp.fromDate(widget.selectedDate));
               Firestore.instance
                   .collection('users')
                   .document(userUID)
