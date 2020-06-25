@@ -36,6 +36,8 @@ class _EntryScreenState extends State<EntryScreen> {
     answerController = new TextEditingController();
     noteController = new TextEditingController();
     questionNumber = Random().nextInt(15);
+    hoursSlept = 2;
+    water = 2;
     holdHoursSlept = 2.0;
     holdWater = 2.0;
     super.initState();

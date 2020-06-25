@@ -20,21 +20,12 @@ class _ChatScreenState extends State<ChatScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
 
   }
 
   Future sendMessage(String message) async {
     final filter = ProfanityFilter(); //Creates filter with default list.
-    String myString = 'you are an ass';
-
-    //To check if profanity exists
-    bool isProfane = filter.checkStringForProfanity(
-        myString); //Returns true since 'ass' is in profanity list.
-    if (isProfane) {
-      print('Profanity was detected');
-    }
     
     textInput.clear();
     await Firestore.instance.collection("messages").add({

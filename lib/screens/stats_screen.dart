@@ -2,10 +2,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:project_progress/helpers/stats_helper.dart';
 
 import 'package:project_progress/models/Entry.dart';
 import 'package:project_progress/models/user_model.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:project_progress/utils/entry_constants.dart';
 
 class Stats extends StatefulWidget {
   @override
@@ -14,9 +16,11 @@ class Stats extends StatefulWidget {
 
 class _Stats extends State<Stats> {
   User currentUser;
+  StatsHelper statsHelper;
 
   @override
   initState() {
+    statsHelper = new StatsHelper();
     super.initState();
   }
 
@@ -43,7 +47,9 @@ class _Stats extends State<Stats> {
   List<FlSpot> getMoodLineChartData(List<Entry> allEntries) {
     List<FlSpot> points = new List<FlSpot>();
     for (int i = 0; i < allEntries.length; i++) {
-      points.add(new FlSpot(i + 0.0, allEntries[i].mood + 0.0));
+      points.add(new FlSpot(
+          statsHelper.dateToInt(allEntries[i].date.toDate()).toDouble(),
+          allEntries[i].mood + 0.0));
     }
     return points;
   }
@@ -52,7 +58,9 @@ class _Stats extends State<Stats> {
   List<FlSpot> getSleepLineChartData(List<Entry> allEntries) {
     List<FlSpot> points = new List<FlSpot>();
     for (int i = 0; i < allEntries.length; i++) {
-      points.add(new FlSpot(i + 0.0, allEntries[i].hoursSlept + 0.0));
+      points.add(new FlSpot(
+          statsHelper.dateToInt(allEntries[i].date.toDate()).toDouble(),
+          allEntries[i].hoursSlept + 0.0));
     }
     return points;
   }
@@ -65,11 +73,9 @@ class _Stats extends State<Stats> {
     for (int i = 0; i < allEntries.length; i++) {
       if (allEntries[i].mood < 4) {
         badMood++;
-      }
-      else if (allEntries[i].mood < 8) {
+      } else if (allEntries[i].mood < 8) {
         mediumMood++;
-      }
-      else {
+      } else {
         goodMood++;
       }
     }
@@ -126,6 +132,7 @@ class _Stats extends State<Stats> {
         barRods: [
           BarChartRodData(
             y: activityCount[i].toDouble(),
+            width: 14.0,
           ),
         ],
       ));
@@ -133,7 +140,8 @@ class _Stats extends State<Stats> {
     return groups;
   }
 
-  Material moodVsSleepChartItem(String title, List<FlSpot> moodData, List<FlSpot> sleepData) {
+  Material moodVsSleepChartItem(
+      String title, List<FlSpot> moodData, List<FlSpot> sleepData) {
     return Material(
       color: Colors.white,
       elevation: 14.0,
@@ -162,6 +170,7 @@ class _Stats extends State<Stats> {
                     padding: EdgeInsets.all(8.0),
                     child: Container(
                       height: 175,
+                      width: 350,
                       child: LineChart(
                         LineChartData(
                           lineBarsData: [
@@ -176,6 +185,16 @@ class _Stats extends State<Stats> {
                               colors: [Colors.green],
                             ),
                           ],
+                          titlesData: FlTitlesData(
+                            show: true,
+                            bottomTitles: SideTitles(
+                                showTitles: true,
+                                interval: 5,
+                                getTitles: (double date) {
+                                  return statsHelper
+                                      .intToDateString(date.round());
+                                }),
+                          ),
                         ),
                       ),
                     ),
@@ -215,19 +234,54 @@ class _Stats extends State<Stats> {
                     ),
                   ),
                   Padding(
-                      padding: EdgeInsets.all(5.0),
-                      child: Container(
-                        height: 125,
-                        width: 125,
-                        child: PieChart(
-                          PieChartData(
-                            sections: graphData,
-                            borderData: FlBorderData(
-                              show: false,
-                            ),
+                    padding: EdgeInsets.all(5.0),
+                    child: Container(
+                      height: 125,
+                      width: 125,
+                      child: PieChart(
+                        PieChartData(
+                          sections: graphData,
+                          borderData: FlBorderData(
+                            show: false,
                           ),
                         ),
-                      )
+                      ),
+                    ),
+                  ),
+                  Row(
+                    children: [
+                      Container(
+                        height: 15,
+                        width: 15,
+                        decoration: BoxDecoration(color: Colors.blue),
+                      ),
+                      SizedBox(width: 12.0,),
+                      Text('Good'),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Container(
+                        height: 15,
+                        width: 15,
+                        decoration: BoxDecoration(color: Colors.orange),
+                      ),
+                      SizedBox(width: 12.0,),
+                      Text('Medium'),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Container(
+                        height: 15,
+                        width: 15,
+                        decoration: BoxDecoration(color: Colors.red),
+                      ),
+                      SizedBox(width: 12.0,),
+                      Text('Bad'),
+                    ],
                   ),
                 ],
               ),
@@ -237,7 +291,6 @@ class _Stats extends State<Stats> {
       ),
     );
   }
-
 
   Material sleepItem(String title, String subtitle) {
     return Material(
@@ -325,7 +378,8 @@ class _Stats extends State<Stats> {
     );
   }
 
-  Material activitiesBarChart(String title, List<BarChartGroupData> activityData) {
+  Material activitiesBarChart(
+      String title, List<BarChartGroupData> activityData) {
     return Material(
       color: Colors.white,
       elevation: 14.0,
@@ -358,6 +412,39 @@ class _Stats extends State<Stats> {
                       child: BarChart(
                         BarChartData(
                           barGroups: activityData,
+                          borderData: FlBorderData(
+                            show: true,
+                            border: Border(
+                              bottom: BorderSide(width: 1.0),
+                              left: BorderSide(width: 1.0),
+                            ),
+                          ),
+                          barTouchData: BarTouchData(
+                            touchTooltipData: BarTouchTooltipData(
+                                getTooltipItem: (BarChartGroupData groupData,
+                                    int groupInd,
+                                    BarChartRodData rodData,
+                                    int rodInd) {
+                              return BarTooltipItem(
+                                groupInd.toString() +
+                                    ': ' +
+                                    rodData.y.toString(),
+                                TextStyle(color: Colors.lightBlue),
+                              );
+                            }),
+                          ),
+                          titlesData: FlTitlesData(
+                            show: true,
+                            bottomTitles: SideTitles(
+                              showTitles: true,
+                              getTitles: (double index) {
+                                return EntryConstants()
+                                    .activityNames[index.round()];
+                              },
+                              textStyle: TextStyle(
+                                  fontSize: 10.0, color: Colors.black),
+                            ),
+                          ),
                         ),
                       ),
                     ),
@@ -385,17 +472,19 @@ class _Stats extends State<Stats> {
           } else {
             List<Entry> allEntries = snapshot.data;
             allEntries.sort((Entry entryA, Entry entryB) {
-              return entryA.date.millisecondsSinceEpoch - entryB.date.millisecondsSinceEpoch;
+              return entryA.date.millisecondsSinceEpoch -
+                  entryB.date.millisecondsSinceEpoch;
             });
 
             List<FlSpot> moodLineChartData = getMoodLineChartData(allEntries);
             List<FlSpot> sleepLineChartData = getSleepLineChartData(allEntries);
-            List<PieChartSectionData> moodPieChartData = getMoodPieChartData(allEntries);
-            List<BarChartGroupData> activitiesChartData = getActivitiesBarChartData(allEntries);
+            List<PieChartSectionData> moodPieChartData =
+                getMoodPieChartData(allEntries);
+            List<BarChartGroupData> activitiesChartData =
+                getActivitiesBarChartData(allEntries);
 
             double avgSleep = getAvgSleep(allEntries);
             double avgWater = getAvgWater(allEntries);
-
 
             return Container(
               child: StaggeredGridView.count(
@@ -405,7 +494,8 @@ class _Stats extends State<Stats> {
                 children: <Widget>[
                   Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: moodVsSleepChartItem("Mood vs Sleep", moodLineChartData, sleepLineChartData),
+                    child: moodVsSleepChartItem(
+                        "Mood vs Sleep", moodLineChartData, sleepLineChartData),
                   ),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -413,22 +503,25 @@ class _Stats extends State<Stats> {
                   ),
                   Padding(
                     padding: const EdgeInsets.only(right: 8.0),
-                    child: sleepItem("Average Sleep", avgSleep.toStringAsFixed(1)),
+                    child:
+                        sleepItem("Average Sleep", avgSleep.toStringAsFixed(1)),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(right: 1.0),
-                    child: waterItem("Average Water", avgWater.toStringAsFixed(1)),
+                    child:
+                        waterItem("Average Water", avgWater.toStringAsFixed(1)),
                   ),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: activitiesBarChart("Activities", activitiesChartData),
+                    child:
+                        activitiesBarChart("Activities", activitiesChartData),
                   ),
                 ],
                 staggeredTiles: [
                   StaggeredTile.extent(4, 250.0),
-                  StaggeredTile.extent(2, 250.0),
-                  StaggeredTile.extent(2, 120.0),
-                  StaggeredTile.extent(2, 120.0),
+                  StaggeredTile.extent(2, 300.0),
+                  StaggeredTile.extent(2, 140.0),
+                  StaggeredTile.extent(2, 140.0),
                   StaggeredTile.extent(4, 250.0),
                 ],
               ),
