@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:project_progress/models/Entry.dart';
 import 'package:project_progress/models/user_model.dart';
 import 'package:project_progress/screens/help_resources_screen.dart';
+import 'package:project_progress/screens/minigame_screen.dart';
 import 'package:project_progress/screens/see_all_entries_screen.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -63,10 +64,6 @@ class _Profile extends State<Profile> {
           SizedBox(
             height: 50.0,
           ),
-          CircleAvatar(
-            radius: 50,
-            backgroundImage: AssetImage("assets/profile.jpg"),
-          ),
           Text(
             'About Me',
             style: TextStyle(
@@ -74,14 +71,6 @@ class _Profile extends State<Profile> {
               color: Colors.blueAccent,
               fontWeight: FontWeight.bold,
             ),
-          ),
-          Text(
-            'Mental Health Professional',
-            style: TextStyle(
-                fontSize: 20.0,
-                color: Colors.blueAccent,
-                letterSpacing: 2.5,
-                fontWeight: FontWeight.bold),
           ),
           SizedBox(
             height: 20,
@@ -228,6 +217,36 @@ class _Profile extends State<Profile> {
               ),
             ),
           ),
+          GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => MinigameScreen()),
+              );
+            },
+            child: Container(
+              padding: EdgeInsets.all(10.0),
+              margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 25.0),
+              child: Row(
+                children: [
+                  Icon(
+                    Icons.gamepad,
+                    color: Colors.blue,
+                  ),
+                  SizedBox(
+                    width: 10.0,
+                  ),
+                  Text(
+                    'Play a Game',
+                    style: TextStyle(
+                      color: Colors.blueAccent,
+                      fontSize: 20.0,
+                    ),
+                  )
+                ],
+              ),
+            ),
+          )
         ],
       )),
     );
@@ -237,8 +256,7 @@ class _Profile extends State<Profile> {
     print(url);
     if (await canLaunch(url)) {
       await launch(url);
-    }
-    else {
+    } else {
       print('can\'t launch url');
     }
   }

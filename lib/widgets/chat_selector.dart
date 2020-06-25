@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:project_progress/models/message_model.dart';
 import 'package:project_progress/screens/chat_screen.dart';
 
 class ChatSelector extends StatelessWidget{

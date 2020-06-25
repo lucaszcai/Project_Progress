@@ -170,7 +170,7 @@ class _Stats extends State<Stats> {
                     padding: EdgeInsets.all(8.0),
                     child: Container(
                       height: 175,
-                      width: 350,
+                      //width: 350,
                       child: LineChart(
                         LineChartData(
                           lineBarsData: [
@@ -426,7 +426,7 @@ class _Stats extends State<Stats> {
                                     BarChartRodData rodData,
                                     int rodInd) {
                               return BarTooltipItem(
-                                groupInd.toString() +
+                                EntryConstants().activityNames[groupInd] +
                                     ': ' +
                                     rodData.y.toString(),
                                 TextStyle(color: Colors.lightBlue),

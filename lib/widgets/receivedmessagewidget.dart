@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-
-import 'mycircleavatar.dart';
 class ReceivedMessagesWidget extends StatelessWidget {
   final String message;
   final String imageUrl;

@@ -4,8 +4,6 @@ import 'package:liquid_swipe/liquid_swipe.dart';
 import 'package:project_progress/utils/style_constants.dart';
 import 'login_page.dart';
 
-import 'home_screen.dart';
-
 class OnboardingScreen extends StatefulWidget {
   @override
   _OnboardingScreen createState() => _OnboardingScreen();

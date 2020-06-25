@@ -75,12 +75,12 @@ class _ChatScreenState extends State<ChatScreen> {
               children: <Widget>[
                 Text(
                   "Cinco Ranch High School",
-                  style: Theme.of(context).textTheme.subhead,
+                  style: Theme.of(context).textTheme.subtitle1,
                   overflow: TextOverflow.clip,
                 ),
                 Text(
                   "Online",
-                  style: Theme.of(context).textTheme.subtitle.apply(
+                  style: Theme.of(context).textTheme.subtitle2.apply(
                     color: Colors.orangeAccent,
                   ),
                 )
