@@ -30,4 +30,16 @@ class EntryConstants {
     Icons.lightbulb_outline,
     Icons.add,
   ];
+
+  List<String> activityNames = [
+    'Work',
+    'Exercise',
+    'Go Out',
+    'Sports',
+    'Friends',
+    'Write',
+    'Rest',
+    'Creative',
+    'Other',
+  ];
 }
