@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:project_progress/screens/home_screen.dart';
-import 'calendar_screen.dart';
-import 'package:project_progress/utils/style_constants.dart';
 
 class RegisterPage extends StatefulWidget {
   RegisterPage({Key key}) : super(key: key);
