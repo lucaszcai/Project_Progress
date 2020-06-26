@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 class MinigameScreen extends StatefulWidget {
   MinigameScreen({Key key}) : super(key: key);
 
@@ -7,7 +8,6 @@ class MinigameScreen extends StatefulWidget {
 }
 
 class _MinigameScreenState extends State<MinigameScreen> {
-
   int counter;
 
   @override
@@ -15,6 +15,7 @@ class _MinigameScreenState extends State<MinigameScreen> {
     counter = 0;
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,10 +37,13 @@ class _MinigameScreenState extends State<MinigameScreen> {
             },
             color: Color.fromRGBO(0, 0, counter, 1),
             child: Center(
-              child: Text(counter.toString(), style: TextStyle(
-                color: Colors.white,
-                fontSize: 15.0,
-              ),),
+              child: Text(
+                counter.toString(),
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 15.0,
+                ),
+              ),
             ),
           ),
         ),
