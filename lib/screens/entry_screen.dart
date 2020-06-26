@@ -5,7 +5,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_circular_slider/flutter_circular_slider.dart';
 import 'package:project_progress/models/Entry.dart';
+import 'package:project_progress/widgets/customslider_widget.dart';
+import 'package:project_progress/widgets/customsliderthumbcircle.dart';
 import 'package:sleek_circular_slider/sleek_circular_slider.dart';
 import 'package:project_progress/utils/entry_constants.dart';
 
@@ -46,61 +49,135 @@ class _EntryScreenState extends State<EntryScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ListView(
-        children: <Widget>[
-          Text(
-            'Choose how you feel today',
-            style: TextStyle(fontSize: 20),
-            textAlign: TextAlign.center,
-          ),
-          SizedBox(
-            height: 50,
-          ),
-          SleekCircularSlider(
-            appearance: CircularSliderAppearance(
-              startAngle: 0,
-              angleRange: 360,
-              customColors: CustomSliderColors(
-                progressBarColors: [
-                  Colors.white,
-                  Colors.blue,
-                  Colors.blue[900],
-                ],
+      body: SingleChildScrollView(
+        child: Container(
+          width: MediaQuery.of(context).size.width,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              SizedBox(height: 20.0,),
+              Container(
+                height: 375.0,
+                width: 350.0,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(20.0),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.5),
+                      spreadRadius: 5,
+                      blurRadius: 7,
+                      offset:
+                      Offset(0, 3), // changes position of shadow
+                    ),
+                  ],
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(15.0),
+                  child: Column(
+                    children: [
+                      Text(
+                        'How did you feel today?',
+                        style: TextStyle(fontSize: 30.0, fontWeight: FontWeight.w600),
+                        textAlign: TextAlign.center,
+                      ),
+                      SizedBox(
+                        height: 35,
+                      ),
+
+                      SleekCircularSlider(
+                        appearance: CircularSliderAppearance(
+                          startAngle: 270,
+                          angleRange: 360,
+                          customColors: CustomSliderColors(
+                            gradientStartAngle: 270,
+                            gradientEndAngle: 630,
+                            progressBarColors: [
+                              Colors.redAccent,
+                              Colors.yellow,
+                              Colors.green,
+                            ],
+                          ),
+                          size: 250,
+                        ),
+                        initialValue: 0,
+                        min: 0,
+                        max: 12,
+                        onChange: (value) {
+                          print(value);
+                          mood = value.round();
+                        },
+                      ),
+                    ],
+                  ),
+                ),
               ),
-              size: 250,
-            ),
-            initialValue: 0,
-            min: 0,
-            max: 12,
-            onChange: (value) {
-              print(value);
-              mood = value.round();
-            },
-          ),
-          Text('How much water did you drink today?'),
-          Slider(
-            min: 0.0,
-            max: 12.0,
-            value: holdWater,
-            onChanged: (value) {
-              setState(() {
-                holdWater = value;
-                water = value.round();
-              });
-            },
-          ),
-          Text('How much did you sleep last night?'),
-          Slider(
-            min: 0.0,
-            max: 12.0,
-            value: holdHoursSlept,
-            onChanged: (value) {
-              setState(() {
-                holdHoursSlept = value;
-                hoursSlept = value.round();
-              });
-            },
-          ),
+              /*
+              SingleCircularSlider(
+                  divisions,
+                  position
+              ),*/
+              SizedBox(height: 30.0,),
+
+              Container(
+                height: 200.0,
+                width: 350.0,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(20.0),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.5),
+                      spreadRadius: 5,
+                      blurRadius: 7,
+                      offset:
+                      Offset(0, 3), // changes position of shadow
+                    ),
+                  ],
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 25.0, horizontal: 10.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Column(
+                        children: [
+                          Text('How much water did you drink today?'),
+                          Slider(
+                            min: 0.0,
+                            max: 12.0,
+                            value: holdWater,
+                            onChanged: (value) {
+                              setState(() {
+                                holdWater = value;
+                                water = value.round();
+                              });
+                            },
+                          ),
+ 
+                        ],
+                      ),
+                      Column(
+                        children: [
+                          Text('How much did you sleep last night?'),
+                          Slider(
+                            min: 0.0,
+                            max: 12.0,
+                            value: holdHoursSlept,
+                            onChanged: (value) {
+                              setState(() {
+                                holdHoursSlept = value;
+                                hoursSlept = value.round();
+                              });
+                            },
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
+                ),
+              ),
+
 //          Container(
 //            height: MediaQuery.of(context).size.height / 7,
 //            child: Row(
@@ -192,151 +269,421 @@ class _EntryScreenState extends State<EntryScreen> {
 //              ],
 //            ),
 //          ),
-          SizedBox(
-            height: 10,
-          ),
-          Container(
-            child: Column(
-              children: <Widget>[
-                Text(
-                  'What did you do today?',
-                  style: TextStyle(
-                    fontSize: 20,
+              SizedBox(
+                height: 30,
+              ),
+              Container(
+                height: 460.0,
+                width: 350.0,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(20.0),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.5),
+                      spreadRadius: 5,
+                      blurRadius: 7,
+                      offset:
+                      Offset(0, 3), // changes position of shadow
+                    ),
+                  ],
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 20.0),
+                  child: Column(
+                    children: <Widget>[
+                      Text(
+                        'What did you do today?',
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      Container(
+                        height: MediaQuery.of(context).size.width,
+                        child: Padding(
+                          padding:
+                          EdgeInsets.all(MediaQuery.of(context).size.width / 8),
+                          child: GridView.count(
+                            primary: false,
+                            shrinkWrap: false,
+                            crossAxisCount: 3,
+                            mainAxisSpacing: 15,
+                            crossAxisSpacing: 15,
+                            physics: NeverScrollableScrollPhysics(),
+                            children: <Widget>[
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    color: Colors.blue,
+                                    borderRadius: BorderRadius.circular(50.0),
+                                boxShadow: [
+                                      BoxShadow(
+                                      color: Colors.grey.withOpacity(0.9),
+                                      spreadRadius: 1,
+                                      blurRadius: 3,
+                                      offset:
+                                      Offset(0, 0), // changes position of shadow
+                                    ),],
+                                  ),
+                                  child: FlatButton(
+                                    shape: CircleBorder(
+                                      //side: BorderSide(color: Colors.black12),
+                                      side: BorderSide.none
+                                    ),
+
+                                    child: Icon(entryConstants.activityIcons[0]),
+                                    color: Colors.white,
+                                    onPressed: () {
+                                      activity = 0;
+                                    },
+                                  ),
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    color: Colors.blue,
+                                    borderRadius: BorderRadius.circular(50.0),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey.withOpacity(0.9),
+                                        spreadRadius: 1,
+                                        blurRadius: 3,
+                                        offset:
+                                        Offset(0, 0), // changes position of shadow
+                                      ),],
+                                  ),
+                                  child: FlatButton(
+                                    shape: CircleBorder(
+                                      //side: BorderSide(color: Colors.black12),
+                                        side: BorderSide.none
+                                    ),
+
+                                    child: Icon(entryConstants.activityIcons[1]),
+                                    color: Colors.white,
+                                    onPressed: () {
+                                      activity = 1;
+                                    },
+                                  ),
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    color: Colors.blue,
+                                    borderRadius: BorderRadius.circular(50.0),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey.withOpacity(0.9),
+                                        spreadRadius: 1,
+                                        blurRadius: 3,
+                                        offset:
+                                        Offset(0, 0), // changes position of shadow
+                                      ),],
+                                  ),
+                                  child: FlatButton(
+                                    shape: CircleBorder(
+                                      //side: BorderSide(color: Colors.black12),
+                                        side: BorderSide.none
+                                    ),
+
+                                    child: Icon(entryConstants.activityIcons[2]),
+                                    color: Colors.white,
+                                    onPressed: () {
+                                      activity = 2;
+                                    },
+                                  ),
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    color: Colors.blue,
+                                    borderRadius: BorderRadius.circular(50.0),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey.withOpacity(0.9),
+                                        spreadRadius: 1,
+                                        blurRadius: 3,
+                                        offset:
+                                        Offset(0, 0), // changes position of shadow
+                                      ),],
+                                  ),
+                                  child: FlatButton(
+                                    shape: CircleBorder(
+                                      //side: BorderSide(color: Colors.black12),
+                                        side: BorderSide.none
+                                    ),
+
+                                    child: Icon(entryConstants.activityIcons[3]),
+                                    color: Colors.white,
+                                    onPressed: () {
+                                      activity = 3;
+                                    },
+                                  ),
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    color: Colors.blue,
+                                    borderRadius: BorderRadius.circular(50.0),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey.withOpacity(0.9),
+                                        spreadRadius: 1,
+                                        blurRadius: 3,
+                                        offset:
+                                        Offset(0, 0), // changes position of shadow
+                                      ),],
+                                  ),
+                                  child: FlatButton(
+                                    shape: CircleBorder(
+                                      //side: BorderSide(color: Colors.black12),
+                                        side: BorderSide.none
+                                    ),
+
+                                    child: Icon(entryConstants.activityIcons[4]),
+                                    color: Colors.white,
+                                    onPressed: () {
+                                      activity = 4;
+                                    },
+                                  ),
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    color: Colors.blue,
+                                    borderRadius: BorderRadius.circular(50.0),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey.withOpacity(0.9),
+                                        spreadRadius: 1,
+                                        blurRadius: 3,
+                                        offset:
+                                        Offset(0, 0), // changes position of shadow
+                                      ),],
+                                  ),
+                                  child: FlatButton(
+                                    shape: CircleBorder(
+                                      //side: BorderSide(color: Colors.black12),
+                                        side: BorderSide.none
+                                    ),
+
+                                    child: Icon(entryConstants.activityIcons[5]),
+                                    color: Colors.white,
+                                    onPressed: () {
+                                      activity = 5;
+                                    },
+                                  ),
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    color: Colors.blue,
+                                    borderRadius: BorderRadius.circular(50.0),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey.withOpacity(0.9),
+                                        spreadRadius: 1,
+                                        blurRadius: 3,
+                                        offset:
+                                        Offset(0, 0), // changes position of shadow
+                                      ),],
+                                  ),
+                                  child: FlatButton(
+                                    shape: CircleBorder(
+                                      //side: BorderSide(color: Colors.black12),
+                                        side: BorderSide.none
+                                    ),
+
+                                    child: Icon(entryConstants.activityIcons[6]),
+                                    color: Colors.white,
+                                    onPressed: () {
+                                      activity = 6;
+                                    },
+                                  ),
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    color: Colors.blue,
+                                    borderRadius: BorderRadius.circular(50.0),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey.withOpacity(0.9),
+                                        spreadRadius: 1,
+                                        blurRadius: 3,
+                                        offset:
+                                        Offset(0, 0), // changes position of shadow
+                                      ),],
+                                  ),
+                                  child: FlatButton(
+                                    shape: CircleBorder(
+                                      //side: BorderSide(color: Colors.black12),
+                                        side: BorderSide.none
+                                    ),
+
+                                    child: Icon(entryConstants.activityIcons[7]),
+                                    color: Colors.white,
+                                    onPressed: () {
+                                      activity = 7;
+                                    },
+                                  ),
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    color: Colors.blue,
+                                    borderRadius: BorderRadius.circular(50.0),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey.withOpacity(0.9),
+                                        spreadRadius: 1,
+                                        blurRadius: 3,
+                                        offset:
+                                        Offset(0, 0), // changes position of shadow
+                                      ),],
+                                  ),
+                                  child: FlatButton(
+                                    shape: CircleBorder(
+                                      //side: BorderSide(color: Colors.black12),
+                                        side: BorderSide.none
+                                    ),
+
+                                    child: Icon(entryConstants.activityIcons[8]),
+                                    color: Colors.white,
+                                    onPressed: () {
+                                      activity = 8;
+                                    },
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-                Container(
-                  height: MediaQuery.of(context).size.width,
-                  child: Padding(
-                    padding:
-                        EdgeInsets.all(MediaQuery.of(context).size.width / 6),
-                    child: GridView.count(
-                      primary: false,
-                      shrinkWrap: false,
-                      crossAxisCount: 3,
-                      mainAxisSpacing: 20,
-                      crossAxisSpacing: 20,
-                      children: <Widget>[
-                        FlatButton(
-                          shape: CircleBorder(
-                            side: BorderSide(color: Colors.black12),
-                          ),
-                          child: Icon(entryConstants.activityIcons[0]),
-                          color: Colors.white,
-                          onPressed: () {
-                            activity = 0;
-                          },
-                        ),
-                        FlatButton(
-                          shape: CircleBorder(
-                            side: BorderSide(color: Colors.black12),
-                          ),
-                          child: Icon(entryConstants.activityIcons[1]),
-                          color: Colors.white,
-                          onPressed: () {
-                            activity = 1;
-                          },
-                        ),
-                        FlatButton(
-                          shape: CircleBorder(
-                            side: BorderSide(color: Colors.black12),
-                          ),
-                          child: Icon(entryConstants.activityIcons[2]),
-                          color: Colors.white,
-                          onPressed: () {
-                            activity = 2;
-                          },
-                        ),
-                        FlatButton(
-                          shape: CircleBorder(
-                            side: BorderSide(color: Colors.black12),
-                          ),
-                          child: Icon(entryConstants.activityIcons[3]),
-                          color: Colors.white,
-                          onPressed: () {
-                            activity = 3;
-                          },
-                        ),
-                        FlatButton(
-                          shape: CircleBorder(
-                            side: BorderSide(color: Colors.black12),
-                          ),
-                          child: Icon(entryConstants.activityIcons[4]),
-                          color: Colors.white,
-                          onPressed: () {
-                            activity = 4;
-                          },
-                        ),
-                        FlatButton(
-                          shape: CircleBorder(
-                            side: BorderSide(color: Colors.black12),
-                          ),
-                          child: Icon(entryConstants.activityIcons[5]),
-                          color: Colors.white,
-                          onPressed: () {
-                            activity = 5;
-                          },
-                        ),
-                        FlatButton(
-                          shape: CircleBorder(
-                            side: BorderSide(color: Colors.black12),
-                          ),
-                          child: Icon(entryConstants.activityIcons[6]),
-                          color: Colors.white,
-                          onPressed: () {
-                            activity = 6;
-                          },
-                        ),
-                        FlatButton(
-                          shape: CircleBorder(
-                            side: BorderSide(color: Colors.black12),
-                          ),
-                          child: Icon(entryConstants.activityIcons[7]),
-                          color: Colors.white,
-                          onPressed: () {
-                            activity = 7;
-                          },
-                        ),
-                        FlatButton(
-                          shape: CircleBorder(
-                            side: BorderSide(color: Colors.black12),
-                          ),
-                          child: Icon(entryConstants.activityIcons[8]),
-                          color: Colors.white,
-                          onPressed: () {
-                            activity = 8;
-                          },
+              ),
+
+              SizedBox(height: 30.0,),
+
+              Container(
+                height: 125.0,
+                width: 350.0,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(20.0),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.5),
+                      spreadRadius: 5,
+                      blurRadius: 7,
+                      offset:
+                      Offset(0, 3), // changes position of shadow
+                    ),
+                  ],
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
+                  child: Center(
+                    child: Column(
+                      children: [
+                        Text(entryConstants.questions[questionNumber]),
+                        TextField(
+                          controller: answerController,
                         ),
                       ],
                     ),
                   ),
                 ),
-              ],
-            ),
-          ),
-          Column(
-            children: [
-              Text(entryConstants.questions[questionNumber]),
-              TextField(
-                controller: answerController,
               ),
-            ],
-          ),
-          Column(
-            children: [
-              TextField(
-                controller: noteController,
-                decoration: InputDecoration(
-                  hintText: 'Write a note!',
+
+
+
+              SizedBox(height: 30.0),
+              Container(
+                height: 200.0,
+                width: 350.0,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(20.0),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.5),
+                      spreadRadius: 5,
+                      blurRadius: 7,
+                      offset:
+                      Offset(0, 3), // changes position of shadow
+                    ),
+                  ],
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Column(
+                    children: [
+                      TextField(
+                        controller: noteController,
+                        decoration: InputDecoration(
+                          hintText: 'Write a note!',
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ],
-          ),
-          RaisedButton(
-            child: Text('Submit'),
-            onPressed: () async {
-              FirebaseUser userData = await FirebaseAuth.instance.currentUser();
-              String userUID = userData.uid;
-              Entry addEntry = new Entry(
+              /*
+              RaisedButton(
+                child: Text('Submit'),
+                onPressed: () async {
+                  FirebaseUser userData = await FirebaseAuth.instance.currentUser();
+                  String userUID = userData.uid;
+                  Entry addEntry = new Entry(
+                      mood: mood,
+                      hoursSlept: hoursSlept,
+                      water: water,
+                      activity: activity,
+                      questionNumber: questionNumber,
+                      note: noteController.text,
+                      questionAnswer: answerController.text,
+                      date: Timestamp.fromDate(widget.selectedDate));
+                  Firestore.instance
+                      .collection('users')
+                      .document(userUID)
+                      .collection('entries')
+                      .add(addEntry.toJson());
+                  Navigator.pop(context);
+                },
+              ),*/
+
+              SizedBox(height: 15.0,),
+
+              ClipOval(
+                child: Material(
+                  color: Colors.blue, // button color
+                  child: InkWell(
+                    splashColor: Colors.red, // inkwell color
+                    child: SizedBox(width: 50, height: 50, child: Icon(Icons.check, color: Colors.white,)),
+                    onTap:  () async {
+                  FirebaseUser userData = await FirebaseAuth.instance.currentUser();
+                  String userUID = userData.uid;
+                  Entry addEntry = new Entry(
                   mood: mood,
                   hoursSlept: hoursSlept,
                   water: water,
@@ -345,15 +692,20 @@ class _EntryScreenState extends State<EntryScreen> {
                   note: noteController.text,
                   questionAnswer: answerController.text,
                   date: Timestamp.fromDate(widget.selectedDate));
-              Firestore.instance
-                  .collection('users')
-                  .document(userUID)
-                  .collection('entries')
-                  .add(addEntry.toJson());
-              Navigator.pop(context);
-            },
-          )
-        ],
+                  Firestore.instance
+                      .collection('users')
+                      .document(userUID)
+                      .collection('entries')
+                      .add(addEntry.toJson());
+                  Navigator.pop(context);
+                  },
+                  ),
+                ),
+              ),
+              SizedBox(height: 20.0,),
+            ],
+          ),
+        ),
       ),
     );
   }
