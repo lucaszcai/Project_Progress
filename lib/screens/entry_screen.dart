@@ -31,6 +31,7 @@ class _EntryScreenState extends State<EntryScreen> {
 
   double holdHoursSlept;
   double holdWater;
+  TextStyle moodStyle;
 
   EntryConstants entryConstants = new EntryConstants();
 
@@ -55,7 +56,9 @@ class _EntryScreenState extends State<EntryScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              SizedBox(height: 20.0,),
+              SizedBox(
+                height: 20.0,
+              ),
               Container(
                 height: 375.0,
                 width: 350.0,
@@ -67,8 +70,7 @@ class _EntryScreenState extends State<EntryScreen> {
                       color: Colors.grey.withOpacity(0.5),
                       spreadRadius: 5,
                       blurRadius: 7,
-                      offset:
-                      Offset(0, 3), // changes position of shadow
+                      offset: Offset(0, 3), // changes position of shadow
                     ),
                   ],
                 ),
@@ -78,36 +80,60 @@ class _EntryScreenState extends State<EntryScreen> {
                     children: [
                       Text(
                         'How did you feel today?',
-                        style: TextStyle(fontSize: 30.0, fontWeight: FontWeight.w600),
+                        style: TextStyle(
+                            fontSize: 30.0, fontWeight: FontWeight.w600),
                         textAlign: TextAlign.center,
                       ),
                       SizedBox(
                         height: 35,
                       ),
-
                       SleekCircularSlider(
-                        appearance: CircularSliderAppearance(
-                          startAngle: 270,
-                          angleRange: 360,
-                          customColors: CustomSliderColors(
-                            gradientStartAngle: 270,
-                            gradientEndAngle: 630,
-                            progressBarColors: [
-                              Colors.redAccent,
-                              Colors.yellow,
-                              Colors.green,
-                            ],
+                          appearance: CircularSliderAppearance(
+                            startAngle: 270,
+                            angleRange: 360,
+                            customColors: CustomSliderColors(
+                              gradientStartAngle: 270,
+                              gradientEndAngle: 630,
+                              progressBarColors: [
+                                Colors.blue,
+                                Colors.lightBlue,
+                              ],
+                            ),
+                            size: 250,
                           ),
-                          size: 250,
-                        ),
-                        initialValue: 0,
-                        min: 0,
-                        max: 12,
-                        onChange: (value) {
-                          print(value);
-                          mood = value.round();
-                        },
-                      ),
+                          initialValue: 0,
+                          min: 0,
+                          max: 12,
+                          onChange: (value) {
+                            print(value);
+                            mood = value.floor();
+                          },
+                          innerWidget: (value) {
+                            String moodString = '';
+                            if (value < 4) {
+                              moodString = 'Bad';
+                              moodStyle = new TextStyle(fontSize: 25.0, fontWeight: FontWeight.w600, color: Colors.red);
+                            } else if (value < 8) {
+                              moodString = 'Meh';
+                              moodStyle = new TextStyle(fontSize: 25.0, fontWeight: FontWeight.w600, color: Colors.yellow);
+                            } else {
+                              moodString = 'Great';
+                              moodStyle = new TextStyle(fontSize: 25.0, fontWeight: FontWeight.w600, color: Colors.green);
+                            }
+                            return Center(
+                              child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,children: [
+                                Text(moodString, style: moodStyle,),
+                                Text(
+                                  (value / 12 * 101).floor().toString() +
+                                      '/100%',
+                                  style: TextStyle(
+                                    fontSize: 20.0,
+                                  ),
+                                ),
+                              ]),
+                            );
+                          }),
                     ],
                   ),
                 ),
@@ -117,10 +143,12 @@ class _EntryScreenState extends State<EntryScreen> {
                   divisions,
                   position
               ),*/
-              SizedBox(height: 30.0,),
+              SizedBox(
+                height: 30.0,
+              ),
 
               Container(
-                height: 200.0,
+                height: 250.0,
                 width: 350.0,
                 decoration: BoxDecoration(
                   color: Colors.white,
@@ -130,19 +158,20 @@ class _EntryScreenState extends State<EntryScreen> {
                       color: Colors.grey.withOpacity(0.5),
                       spreadRadius: 5,
                       blurRadius: 7,
-                      offset:
-                      Offset(0, 3), // changes position of shadow
+                      offset: Offset(0, 3), // changes position of shadow
                     ),
                   ],
                 ),
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 25.0, horizontal: 10.0),
+                  padding: const EdgeInsets.symmetric(
+                      vertical: 25.0, horizontal: 10.0),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Column(
                         children: [
                           Text('How much water did you drink today?'),
+                          Text(water.toString() + ' cups'),
                           Slider(
                             min: 0.0,
                             max: 12.0,
@@ -150,16 +179,16 @@ class _EntryScreenState extends State<EntryScreen> {
                             onChanged: (value) {
                               setState(() {
                                 holdWater = value;
-                                water = value.round();
+                                water = value.floor();
                               });
                             },
                           ),
-
                         ],
                       ),
                       Column(
                         children: [
                           Text('How much did you sleep last night?'),
+                          Text(hoursSlept.toString() + ' hours'),
                           Slider(
                             min: 0.0,
                             max: 12.0,
@@ -167,7 +196,7 @@ class _EntryScreenState extends State<EntryScreen> {
                             onChanged: (value) {
                               setState(() {
                                 holdHoursSlept = value;
-                                hoursSlept = value.round();
+                                hoursSlept = value.floor();
                               });
                             },
                           ),
@@ -283,8 +312,7 @@ class _EntryScreenState extends State<EntryScreen> {
                       color: Colors.grey.withOpacity(0.5),
                       spreadRadius: 5,
                       blurRadius: 7,
-                      offset:
-                      Offset(0, 3), // changes position of shadow
+                      offset: Offset(0, 3), // changes position of shadow
                     ),
                   ],
                 ),
@@ -302,8 +330,8 @@ class _EntryScreenState extends State<EntryScreen> {
                       Container(
                         height: MediaQuery.of(context).size.width,
                         child: Padding(
-                          padding:
-                          EdgeInsets.all(MediaQuery.of(context).size.width / 8),
+                          padding: EdgeInsets.all(
+                              MediaQuery.of(context).size.width / 8),
                           child: GridView.count(
                             primary: false,
                             shrinkWrap: false,
@@ -318,25 +346,27 @@ class _EntryScreenState extends State<EntryScreen> {
                                   decoration: BoxDecoration(
                                     color: Colors.blue,
                                     borderRadius: BorderRadius.circular(50.0),
-                                boxShadow: [
+                                    boxShadow: [
                                       BoxShadow(
-                                      color: Colors.grey.withOpacity(0.9),
-                                      spreadRadius: 1,
-                                      blurRadius: 3,
-                                      offset:
-                                      Offset(0, 0), // changes position of shadow
-                                    ),],
+                                        color: Colors.grey.withOpacity(0.9),
+                                        spreadRadius: 1,
+                                        blurRadius: 3,
+                                        offset: Offset(
+                                            0, 0), // changes position of shadow
+                                      ),
+                                    ],
                                   ),
                                   child: FlatButton(
                                     shape: CircleBorder(
-                                      //side: BorderSide(color: Colors.black12),
-                                      side: BorderSide.none
-                                    ),
-
-                                    child: Icon(entryConstants.activityIcons[0]),
-                                    color: Colors.white,
+                                        //side: BorderSide(color: Colors.black12),
+                                        side: BorderSide.none),
+                                    child:
+                                        Icon(entryConstants.activityIcons[0]),
+                                    color: activity == 0 ? Colors.grey : Colors.white,
                                     onPressed: () {
-                                      activity = 0;
+                                      setState(() {
+                                        activity = 0;
+                                      });
                                     },
                                   ),
                                 ),
@@ -352,20 +382,22 @@ class _EntryScreenState extends State<EntryScreen> {
                                         color: Colors.grey.withOpacity(0.9),
                                         spreadRadius: 1,
                                         blurRadius: 3,
-                                        offset:
-                                        Offset(0, 0), // changes position of shadow
-                                      ),],
+                                        offset: Offset(
+                                            0, 0), // changes position of shadow
+                                      ),
+                                    ],
                                   ),
                                   child: FlatButton(
                                     shape: CircleBorder(
-                                      //side: BorderSide(color: Colors.black12),
-                                        side: BorderSide.none
-                                    ),
-
-                                    child: Icon(entryConstants.activityIcons[1]),
-                                    color: Colors.white,
+                                        //side: BorderSide(color: Colors.black12),
+                                        side: BorderSide.none),
+                                    child:
+                                        Icon(entryConstants.activityIcons[1]),
+                                    color: activity == 1 ? Colors.grey : Colors.white,
                                     onPressed: () {
-                                      activity = 1;
+                                      setState(() {
+                                        activity = 1;
+                                      });
                                     },
                                   ),
                                 ),
@@ -381,20 +413,22 @@ class _EntryScreenState extends State<EntryScreen> {
                                         color: Colors.grey.withOpacity(0.9),
                                         spreadRadius: 1,
                                         blurRadius: 3,
-                                        offset:
-                                        Offset(0, 0), // changes position of shadow
-                                      ),],
+                                        offset: Offset(
+                                            0, 0), // changes position of shadow
+                                      ),
+                                    ],
                                   ),
                                   child: FlatButton(
                                     shape: CircleBorder(
-                                      //side: BorderSide(color: Colors.black12),
-                                        side: BorderSide.none
-                                    ),
-
-                                    child: Icon(entryConstants.activityIcons[2]),
-                                    color: Colors.white,
+                                        //side: BorderSide(color: Colors.black12),
+                                        side: BorderSide.none),
+                                    child:
+                                        Icon(entryConstants.activityIcons[2]),
+                                    color: activity == 2 ? Colors.grey : Colors.white,
                                     onPressed: () {
-                                      activity = 2;
+                                      setState(() {
+                                        activity = 2;
+                                      });
                                     },
                                   ),
                                 ),
@@ -410,20 +444,22 @@ class _EntryScreenState extends State<EntryScreen> {
                                         color: Colors.grey.withOpacity(0.9),
                                         spreadRadius: 1,
                                         blurRadius: 3,
-                                        offset:
-                                        Offset(0, 0), // changes position of shadow
-                                      ),],
+                                        offset: Offset(
+                                            0, 0), // changes position of shadow
+                                      ),
+                                    ],
                                   ),
                                   child: FlatButton(
                                     shape: CircleBorder(
-                                      //side: BorderSide(color: Colors.black12),
-                                        side: BorderSide.none
-                                    ),
-
-                                    child: Icon(entryConstants.activityIcons[3]),
-                                    color: Colors.white,
+                                        //side: BorderSide(color: Colors.black12),
+                                        side: BorderSide.none),
+                                    child:
+                                        Icon(entryConstants.activityIcons[3]),
+                                    color: activity == 3 ? Colors.grey : Colors.white,
                                     onPressed: () {
-                                      activity = 3;
+                                      setState(() {
+                                        activity = 3;
+                                      });
                                     },
                                   ),
                                 ),
@@ -439,20 +475,22 @@ class _EntryScreenState extends State<EntryScreen> {
                                         color: Colors.grey.withOpacity(0.9),
                                         spreadRadius: 1,
                                         blurRadius: 3,
-                                        offset:
-                                        Offset(0, 0), // changes position of shadow
-                                      ),],
+                                        offset: Offset(
+                                            0, 0), // changes position of shadow
+                                      ),
+                                    ],
                                   ),
                                   child: FlatButton(
                                     shape: CircleBorder(
-                                      //side: BorderSide(color: Colors.black12),
-                                        side: BorderSide.none
-                                    ),
-
-                                    child: Icon(entryConstants.activityIcons[4]),
-                                    color: Colors.white,
+                                        //side: BorderSide(color: Colors.black12),
+                                        side: BorderSide.none),
+                                    child:
+                                        Icon(entryConstants.activityIcons[4]),
+                                    color: activity == 4 ? Colors.grey : Colors.white,
                                     onPressed: () {
-                                      activity = 4;
+                                      setState(() {
+                                        activity = 4;
+                                      });
                                     },
                                   ),
                                 ),
@@ -468,20 +506,22 @@ class _EntryScreenState extends State<EntryScreen> {
                                         color: Colors.grey.withOpacity(0.9),
                                         spreadRadius: 1,
                                         blurRadius: 3,
-                                        offset:
-                                        Offset(0, 0), // changes position of shadow
-                                      ),],
+                                        offset: Offset(
+                                            0, 0), // changes position of shadow
+                                      ),
+                                    ],
                                   ),
                                   child: FlatButton(
                                     shape: CircleBorder(
-                                      //side: BorderSide(color: Colors.black12),
-                                        side: BorderSide.none
-                                    ),
-
-                                    child: Icon(entryConstants.activityIcons[5]),
-                                    color: Colors.white,
+                                        //side: BorderSide(color: Colors.black12),
+                                        side: BorderSide.none),
+                                    child:
+                                        Icon(entryConstants.activityIcons[5]),
+                                    color: activity == 5 ? Colors.grey : Colors.white,
                                     onPressed: () {
-                                      activity = 5;
+                                      setState(() {
+                                        activity = 5;
+                                      });
                                     },
                                   ),
                                 ),
@@ -497,20 +537,22 @@ class _EntryScreenState extends State<EntryScreen> {
                                         color: Colors.grey.withOpacity(0.9),
                                         spreadRadius: 1,
                                         blurRadius: 3,
-                                        offset:
-                                        Offset(0, 0), // changes position of shadow
-                                      ),],
+                                        offset: Offset(
+                                            0, 0), // changes position of shadow
+                                      ),
+                                    ],
                                   ),
                                   child: FlatButton(
                                     shape: CircleBorder(
-                                      //side: BorderSide(color: Colors.black12),
-                                        side: BorderSide.none
-                                    ),
-
-                                    child: Icon(entryConstants.activityIcons[6]),
-                                    color: Colors.white,
+                                        //side: BorderSide(color: Colors.black12),
+                                        side: BorderSide.none),
+                                    child:
+                                        Icon(entryConstants.activityIcons[6]),
+                                    color: activity == 6 ? Colors.grey : Colors.white,
                                     onPressed: () {
-                                      activity = 6;
+                                      setState(() {
+                                        activity = 6;
+                                      });
                                     },
                                   ),
                                 ),
@@ -526,20 +568,22 @@ class _EntryScreenState extends State<EntryScreen> {
                                         color: Colors.grey.withOpacity(0.9),
                                         spreadRadius: 1,
                                         blurRadius: 3,
-                                        offset:
-                                        Offset(0, 0), // changes position of shadow
-                                      ),],
+                                        offset: Offset(
+                                            0, 0), // changes position of shadow
+                                      ),
+                                    ],
                                   ),
                                   child: FlatButton(
                                     shape: CircleBorder(
-                                      //side: BorderSide(color: Colors.black12),
-                                        side: BorderSide.none
-                                    ),
-
-                                    child: Icon(entryConstants.activityIcons[7]),
-                                    color: Colors.white,
+                                        //side: BorderSide(color: Colors.black12),
+                                        side: BorderSide.none),
+                                    child:
+                                        Icon(entryConstants.activityIcons[7]),
+                                    color: activity == 7 ? Colors.grey : Colors.white,
                                     onPressed: () {
-                                      activity = 7;
+                                      setState(() {
+                                        activity = 7;
+                                      });
                                     },
                                   ),
                                 ),
@@ -555,20 +599,22 @@ class _EntryScreenState extends State<EntryScreen> {
                                         color: Colors.grey.withOpacity(0.9),
                                         spreadRadius: 1,
                                         blurRadius: 3,
-                                        offset:
-                                        Offset(0, 0), // changes position of shadow
-                                      ),],
+                                        offset: Offset(
+                                            0, 0), // changes position of shadow
+                                      ),
+                                    ],
                                   ),
                                   child: FlatButton(
                                     shape: CircleBorder(
-                                      //side: BorderSide(color: Colors.black12),
-                                        side: BorderSide.none
-                                    ),
-
-                                    child: Icon(entryConstants.activityIcons[8]),
-                                    color: Colors.white,
+                                        //side: BorderSide(color: Colors.black12),
+                                        side: BorderSide.none),
+                                    child:
+                                        Icon(entryConstants.activityIcons[8]),
+                                    color: activity == 8 ? Colors.grey : Colors.white,
                                     onPressed: () {
-                                      activity = 8;
+                                      setState(() {
+                                        activity = 8;
+                                      });
                                     },
                                   ),
                                 ),
@@ -582,7 +628,9 @@ class _EntryScreenState extends State<EntryScreen> {
                 ),
               ),
 
-              SizedBox(height: 30.0,),
+              SizedBox(
+                height: 30.0,
+              ),
 
               Container(
                 height: 125.0,
@@ -595,13 +643,13 @@ class _EntryScreenState extends State<EntryScreen> {
                       color: Colors.grey.withOpacity(0.5),
                       spreadRadius: 5,
                       blurRadius: 7,
-                      offset:
-                      Offset(0, 3), // changes position of shadow
+                      offset: Offset(0, 3), // changes position of shadow
                     ),
                   ],
                 ),
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 20.0, vertical: 20.0),
                   child: Center(
                     child: Column(
                       children: [
@@ -615,8 +663,6 @@ class _EntryScreenState extends State<EntryScreen> {
                 ),
               ),
 
-
-
               SizedBox(height: 30.0),
               Container(
                 height: 200.0,
@@ -629,8 +675,7 @@ class _EntryScreenState extends State<EntryScreen> {
                       color: Colors.grey.withOpacity(0.5),
                       spreadRadius: 5,
                       blurRadius: 7,
-                      offset:
-                      Offset(0, 3), // changes position of shadow
+                      offset: Offset(0, 3), // changes position of shadow
                     ),
                   ],
                 ),
@@ -672,37 +717,48 @@ class _EntryScreenState extends State<EntryScreen> {
                 },
               ),*/
 
-              SizedBox(height: 15.0,),
+              SizedBox(
+                height: 15.0,
+              ),
 
               ClipOval(
                 child: Material(
                   color: Colors.blue, // button color
                   child: InkWell(
                     splashColor: Colors.red, // inkwell color
-                    child: SizedBox(width: 50, height: 50, child: Icon(Icons.check, color: Colors.white,)),
-                    onTap:  () async {
-                  FirebaseUser userData = await FirebaseAuth.instance.currentUser();
-                  String userUID = userData.uid;
-                  Entry addEntry = new Entry(
-                  mood: mood,
-                  hoursSlept: hoursSlept,
-                  water: water,
-                  activity: activity,
-                  questionNumber: questionNumber,
-                  note: noteController.text,
-                  questionAnswer: answerController.text,
-                  date: Timestamp.fromDate(widget.selectedDate));
-                  Firestore.instance
-                      .collection('users')
-                      .document(userUID)
-                      .collection('entries')
-                      .add(addEntry.toJson());
-                  Navigator.pop(context);
-                  },
+                    child: SizedBox(
+                        width: 50,
+                        height: 50,
+                        child: Icon(
+                          Icons.check,
+                          color: Colors.white,
+                        )),
+                    onTap: () async {
+                      FirebaseUser userData =
+                          await FirebaseAuth.instance.currentUser();
+                      String userUID = userData.uid;
+                      Entry addEntry = new Entry(
+                          mood: mood,
+                          hoursSlept: hoursSlept,
+                          water: water,
+                          activity: activity,
+                          questionNumber: questionNumber,
+                          note: noteController.text,
+                          questionAnswer: answerController.text,
+                          date: Timestamp.fromDate(widget.selectedDate));
+                      Firestore.instance
+                          .collection('users')
+                          .document(userUID)
+                          .collection('entries')
+                          .add(addEntry.toJson());
+                      Navigator.pop(context);
+                    },
                   ),
                 ),
               ),
-              SizedBox(height: 20.0,),
+              SizedBox(
+                height: 20.0,
+              ),
             ],
           ),
         ),

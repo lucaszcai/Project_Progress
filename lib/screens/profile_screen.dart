@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:project_progress/models/Entry.dart';
 import 'package:project_progress/models/user_model.dart';
+import 'package:project_progress/screens/breathing_page.dart';
 import 'package:project_progress/screens/help_resources_screen.dart';
 import 'package:project_progress/screens/minigame_screen.dart';
 import 'package:project_progress/screens/see_all_entries_screen.dart';
@@ -239,10 +240,35 @@ class _Profile extends State<Profile> {
                   Text(
                     'Play a Game',
                     style: TextStyle(
-                      color: Colors.blueAccent,
+                      color: Colors.blue,
                       fontSize: 20.0,
                     ),
                   )
+                ],
+              ),
+            ),
+          ),
+          GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => BreathingPage()),
+              );
+            },
+            child: Container(
+              padding: EdgeInsets.all(10.0),
+              margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 25.0),
+              child: Row(
+                children: [
+                  Icon(
+                    Icons.favorite,
+                    color: Colors.blue,
+                  ),
+                  SizedBox(width: 10.0,),
+                  Text('Breathe', style: TextStyle(
+                    color: Colors.blue,
+                    fontSize: 20.0,
+                  ),)
                 ],
               ),
             ),

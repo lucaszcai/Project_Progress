@@ -20,7 +20,7 @@ class HelpResourcesScreen extends StatelessWidget{
               _launchTelephone('+18002738255');
             },
             title: Text('Suicide Hotline'),
-            subtitle: Text('+18002738255'),
+            subtitle: Text('+1(800) 273-8255'),
           ),
           ListTile(
             onTap: () {
