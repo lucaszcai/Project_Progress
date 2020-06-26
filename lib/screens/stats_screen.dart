@@ -268,7 +268,7 @@ class _Stats extends State<Stats> {
                         decoration: BoxDecoration(color: Colors.orange),
                       ),
                       SizedBox(width: 12.0,),
-                      Text('Medium'),
+                      Text('Meh'),
                     ],
                   ),
                   Row(
