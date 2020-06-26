@@ -9,10 +9,12 @@ class HelpResourcesScreen extends StatelessWidget{
     return Scaffold(
       body: Column(
         children: [
+          SizedBox(height: 30.0,),
           Text(
-            'We want to help you'
+            'Emergency Resources',
+            style: TextStyle(fontSize: 30.0, fontWeight: FontWeight.bold),
           ),
-          SizedBox(height: MediaQuery.of(context).size.height / 15,),
+          SizedBox(height: 15.0,),
           ListTile(
             onTap: ()  {
               _launchTelephone('+18002738255');
