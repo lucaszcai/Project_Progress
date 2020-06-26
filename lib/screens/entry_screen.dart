@@ -154,7 +154,7 @@ class _EntryScreenState extends State<EntryScreen> {
                               });
                             },
                           ),
- 
+
                         ],
                       ),
                       Column(

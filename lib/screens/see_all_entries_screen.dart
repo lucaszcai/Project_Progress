@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:project_progress/helpers/stats_helper.dart';
 import 'package:project_progress/models/Entry.dart';
 
@@ -26,9 +27,56 @@ class SeeAllEntriesScreen extends StatelessWidget {
             return ExpansionTile(
               title: Text(title),
               children: [
-                Text('Mood: ' + allEntries[i].mood.toString()),
-                Text('Water: ' + allEntries[i].water.toString()),
-                Text('Hours Slept: ' + allEntries[i].hoursSlept.toString()),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 40.0, vertical: 5.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text('Mood:'),
+                      LinearPercentIndicator(
+                        width: 140.0,
+                        lineHeight: 14.0,
+                        percent: allEntries[i].mood / 12,
+                        backgroundColor: Colors.grey,
+                        progressColor: Colors.blue,
+                      )
+                    ],
+                  ),
+                ),
+                //Text('Water: ' + allEntries[i].water.toString()),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 40.0, vertical: 5.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text('Water:'),
+                      LinearPercentIndicator(
+                        width: 140.0,
+                        lineHeight: 14.0,
+                        percent: allEntries[i].water / 12,
+                        backgroundColor: Colors.grey,
+                        progressColor: Colors.blue,
+                      )
+                    ],
+                  ),
+                ),
+                //Text('Hours Slept: ' + allEntries[i].hoursSlept.toString()),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 40.0, vertical: 5.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text('Hours Slept:'),
+                      LinearPercentIndicator(
+                        width: 140.0,
+                        lineHeight: 14.0,
+                        percent: allEntries[i].hoursSlept / 12,
+                        backgroundColor: Colors.grey,
+                        progressColor: Colors.blue,
+                      )
+                    ],
+                  ),
+                ),
               ],
             );
           }),
