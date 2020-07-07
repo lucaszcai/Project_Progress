@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:project_progress/screens/login_page.dart';
 import 'package:project_progress/screens/root_screen.dart';
 
 void main() {
@@ -14,10 +15,12 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Project Progress',
       theme: ThemeData(
-
         primarySwatch: Colors.blue,
       ),
       home: RootScreen(),
+      routes: <String, WidgetBuilder> {
+        '/login': (BuildContext context) => LoginPage(),
+      },
     );
   }
 }

@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/gestures.dart';
 import 'package:project_progress/models/Entry.dart';
 import 'package:project_progress/models/user_model.dart';
 import 'package:project_progress/screens/breathing_page.dart';
@@ -18,6 +19,8 @@ class _Profile extends State<Profile> {
   List<Entry> allEntries;
   User currentUser;
   bool loaded;
+  String privacyUrl =
+      'https://www.termsfeed.com/live/d51c9a46-b643-46d4-8bf7-5989e5d7e334';
 
   @override
   void initState() {
@@ -112,52 +115,6 @@ class _Profile extends State<Profile> {
                   ),
                 )
               : CircularProgressIndicator(),
-          Container(
-            //color: Colors.white,
-            padding: EdgeInsets.all(10.0),
-            margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 25.0),
-            child: Row(
-              children: <Widget>[
-                Icon(
-                  Icons.add_location,
-                  color: Colors.blueAccent,
-                ),
-                SizedBox(
-                  width: 10.0,
-                ),
-                Text(
-                  'Followers',
-                  style: TextStyle(
-                    color: Colors.blueAccent,
-                    fontSize: 20.0,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Container(
-            //color: Colors.white,
-            padding: EdgeInsets.all(10.0),
-            margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 25.0),
-            child: Row(
-              children: <Widget>[
-                Icon(
-                  Icons.star,
-                  color: Colors.blueAccent,
-                ),
-                SizedBox(
-                  width: 10.0,
-                ),
-                Text(
-                  'Member since: 2/27/2020',
-                  style: TextStyle(
-                    color: Colors.blueAccent,
-                    fontSize: 20.0,
-                  ),
-                ),
-              ],
-            ),
-          ),
           GestureDetector(
             onTap: () {
               print('tapped');
@@ -208,7 +165,7 @@ class _Profile extends State<Profile> {
                     width: 10.0,
                   ),
                   Text(
-                    'I need help!',
+                    'Help',
                     style: TextStyle(
                       color: Colors.blueAccent,
                       fontSize: 20.0,
@@ -261,18 +218,47 @@ class _Profile extends State<Profile> {
               child: Row(
                 children: [
                   Icon(
-                    Icons.favorite,
+                    Icons.laptop_mac,
                     color: Colors.blue,
                   ),
-                  SizedBox(width: 10.0,),
-                  Text('Breathe', style: TextStyle(
-                    color: Colors.blue,
-                    fontSize: 20.0,
-                  ),)
+                  SizedBox(
+                    width: 10.0,
+                  ),
+                  Text(
+                    'Breathe',
+                    style: TextStyle(
+                      color: Colors.blue,
+                      fontSize: 20.0,
+                    ),
+                  )
                 ],
               ),
             ),
-          )
+          ),
+          FlatButton(
+            child: Text('Log Out'),
+            onPressed: () {
+              FirebaseAuth.instance.signOut();
+              Navigator.popAndPushNamed(context, '/login');
+            },
+          ),
+          SizedBox(
+            height: 20.0,
+          ),
+          RichText(
+            text: TextSpan(
+                text: 'Privacy Policy',
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    decoration: TextDecoration.underline,
+                    color: Colors.black),
+                recognizer: TapGestureRecognizer()
+                  ..onTap = () async {
+                    if (await canLaunch(privacyUrl)) {
+                      launch(privacyUrl);
+                    }
+                  }),
+          ),
         ],
       )),
     );

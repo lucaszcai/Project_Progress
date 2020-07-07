@@ -18,6 +18,7 @@ class _LoginPageState extends State<LoginPage> {
   TextEditingController emailInputController;
   TextEditingController pwdInputController;
 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -177,7 +178,7 @@ class _LoginPageState extends State<LoginPage> {
                         MaterialPageRoute(builder: (context) => RegisterPage()),
                       );
                     },
-                  )
+                  ),
                 ],
               ),
             ))));

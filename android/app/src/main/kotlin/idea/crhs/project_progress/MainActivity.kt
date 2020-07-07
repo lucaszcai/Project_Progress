@@ -1,4 +1,4 @@
-package idea.crhs.project_progress
+package idea.pp.project_progress
 
 import androidx.annotation.NonNull;
 import io.flutter.embedding.android.FlutterActivity

@@ -328,7 +328,7 @@ class _EntryScreenState extends State<EntryScreen> {
                         ),
                       ),
                       Container(
-                        height: MediaQuery.of(context).size.width,
+                        height: 390,
                         child: Padding(
                           padding: EdgeInsets.all(
                               MediaQuery.of(context).size.width / 8),

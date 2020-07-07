@@ -33,6 +33,11 @@ class _Stats extends State<Stats> {
         .document(getUser.uid)
         .get();
     currentUser = User.fromSnapshot(userData);
+    
+    QuerySnapshot goodMood = await userData.reference.collection('entries').where('mood', isGreaterThan: 4).where('questionNumber',isEqualTo: 10).getDocuments();
+    for (int i = 0; i < goodMood.documents.length; i++) {
+      print(goodMood.documents[i].data['date'].toString() + ' ' + goodMood.documents[i].data['mood'].toString() + ' ' + goodMood.documents[i].data['questionNumber'].toString());
+    }
 
     QuerySnapshot entriesData =
         await userData.reference.collection('entries').getDocuments();

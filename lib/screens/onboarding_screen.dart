@@ -134,11 +134,11 @@ class _OnboardingScreen extends State<OnboardingScreen> {
                           ),
                           child: Column(
                               children: <Widget>[
-                                Text('Connect with a community of',
+                                Text('Connect with',
                                     style: StyleConstants.onboardingText
                                 ),
                                 Text(
-                                    'diverse individuals', style: StyleConstants.onboardingText
+                                    'others', style: StyleConstants.onboardingText
                                 ),
                               ]
                           ),
@@ -291,8 +291,11 @@ class _FirstScreen extends State<FirstScreen> {
                             shape: CircleBorder(),
                             child: CircleAvatar(
                               backgroundColor: Colors.grey[100],
-                              child: FlutterLogo(
-                                size: 100.0,
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  image: new DecorationImage(image: AssetImage('assets/onboarding/first_page.png')),
+                                ),
                               ),
                               radius: 100.0,
                             )

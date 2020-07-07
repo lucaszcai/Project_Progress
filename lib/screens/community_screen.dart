@@ -96,23 +96,28 @@ class _CommunityPageState extends State<CommunityPage> {
                             String name = '';
                             if (allChats[i].data['user1'] == user) {
                               name = allChats[i].data['user2'];
-                            } else {
+                            } else if (allChats[i].data['user2'] == user){
                               name = allChats[i].data['user1'];
                             }
-                            return ListTile(
-                              title: Text(name),
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => ChatScreen(
-                                            user: user,
-                                            chatId: allChats[i].data['chatid'],
-                                          )),
-                                );
-                              },
-                              trailing: Icon(Icons.chevron_right),
-                            );
+                            if (name != '') {
+                              return ListTile(
+                                title: Text(name),
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => ChatScreen(
+                                          user: user,
+                                          chatId: allChats[i].data['chatid'],
+                                        )),
+                                  );
+                                },
+                                trailing: Icon(Icons.chevron_right),
+                              );
+                            }
+                            else {
+                              return Container();
+                            }
                           }),
                     );
                   }

@@ -1,8 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/gestures.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:project_progress/screens/home_screen.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class RegisterPage extends StatefulWidget {
   RegisterPage({Key key}) : super(key: key);
@@ -15,11 +17,15 @@ class _RegisterPageState extends State<RegisterPage> {
   final GlobalKey<FormState> _registerFormKey = GlobalKey<FormState>();
   TextEditingController emailInputController;
   TextEditingController pwdInputController;
+  String privacyUrl =
+      'https://www.termsfeed.com/live/d51c9a46-b643-46d4-8bf7-5989e5d7e334';
+  bool checkPrivacy;
 
   @override
   initState() {
     emailInputController = new TextEditingController();
     pwdInputController = new TextEditingController();
+    checkPrivacy = false;
     super.initState();
   }
 
@@ -110,7 +116,9 @@ class _RegisterPageState extends State<RegisterPage> {
                       validator: emailValidator,
                     ),
                   ),
-                  SizedBox(height: MediaQuery.of(context).size.height / 30,),
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height / 30,
+                  ),
                   Container(
                     child: TextFormField(
                       style: TextStyle(
@@ -144,43 +152,77 @@ class _RegisterPageState extends State<RegisterPage> {
                   ),
                   RaisedButton(
                     shape: new RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15.0),),
+                      borderRadius: BorderRadius.circular(15.0),
+                    ),
                     child: Padding(
                       padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
-                      child: Text("Register", style: TextStyle(fontSize: 20),),
+                      child: Text(
+                        "Register",
+                        style: TextStyle(fontSize: 20),
+                      ),
                     ),
                     color: Colors.blue[300],
                     textColor: Colors.white,
                     onPressed: () {
-                      if (_registerFormKey.currentState.validate()) {
-                        print('done');
-                        FirebaseAuth.instance
-                            .createUserWithEmailAndPassword(
-                                email: emailInputController.text,
-                                password: pwdInputController.text)
-                            .then((currentUser) {
-                          Firestore.instance
-                              .collection("users")
-                              .document(currentUser.user.uid)
-                              .setData({
-                            "uid": currentUser.user.uid,
-                            "email": emailInputController.text,
+                      if (checkPrivacy) {
+                        if (_registerFormKey.currentState.validate()) {
+                          print('done');
+                          FirebaseAuth.instance
+                              .createUserWithEmailAndPassword(
+                                  email: emailInputController.text,
+                                  password: pwdInputController.text)
+                              .then((currentUser) {
+                            Firestore.instance
+                                .collection("users")
+                                .document(currentUser.user.uid)
+                                .setData({
+                              "uid": currentUser.user.uid,
+                              "email": emailInputController.text,
+                            });
+                            print("Done");
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => HomeScreen(
+                                        uid: currentUser.user.uid,
+                                      )),
+                            );
+                            emailInputController.clear();
+                            pwdInputController.clear();
                           });
-                          print("Done");
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => HomeScreen(
-                                      uid: currentUser.user.uid,
-                                    )),
-                          );
-                          emailInputController.clear();
-                          pwdInputController.clear();
-                        });
+                        }
                       }
                     },
                   ),
-                  SizedBox(height: MediaQuery.of(context).size.height / 30,),
+                  Row(
+                    children: [
+                      Checkbox(
+                        value: checkPrivacy,
+                        onChanged: (value) {
+                          setState(() {
+                            checkPrivacy = !checkPrivacy;
+                          });
+                        },
+                      ),
+                      RichText(
+                        text: TextSpan(
+                            text:
+                                'By registering, you agree to our privacy policy',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                decoration: TextDecoration.underline),
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = () async {
+                                if (await canLaunch(privacyUrl)) {
+                                  launch(privacyUrl);
+                                }
+                              }),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height / 30,
+                  ),
                   Text("Already have an account?"),
                   FlatButton(
                     child: Text("Login here!"),
